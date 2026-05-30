@@ -1,0 +1,123 @@
+<%- include('partials/header') %>
+<%- include('partials/loadhead') %>
+
+<body onload="initAbout()" class="app-body">
+
+<div id="loader"></div>
+
+<!-- MAIN WRAPPER -->
+<div id="aboutPage" class="about-wrapper container py-5 animate-bottom" style="display:none;">
+
+  <!-- HERO SECTION -->
+  <div class="about-hero text-center mb-5">
+
+    <h1 class="about-title">
+      <i class="fas fa-shield-alt"></i>
+      About Our System
+    </h1>
+
+    <p class="about-subtitle">
+      Network Intrusion Detection System using Machine Learning & Deep Learning
+    </p>
+
+  </div>
+
+  <!-- DESCRIPTION CARD -->
+  <div class="info-card mb-5">
+
+    <p>
+      <i class="fas fa-globe"></i>
+      Large numbers of businesses are affected by cyber-attacks due to dependency on the internet.
+      This system detects anomalies and alerts users in real-time.
+    </p>
+
+    <p>
+      <i class="fas fa-globe"></i>
+      The project uses the NSL-KDD dataset with ML models like KNN and Random Forest,
+      and Deep Learning models like LSTM and CNN for classification.
+    </p>
+
+    <p>
+      <i class="fas fa-globe"></i>
+      The frontend is designed for user input of network parameters, while Node.js handles backend processing.
+      MongoDB is used for data storage and model outputs.
+    </p>
+
+    <p>
+      <i class="fas fa-globe"></i>
+      The system supports authentication with session handling and Google OAuth 2.0 for secure access.
+    </p>
+
+  </div>
+
+  <!-- TEAM SECTION -->
+  <div class="section-title text-center mb-4">
+    <h2>Our Team</h2>
+  </div>
+
+  <div class="team-grid">
+
+    <!-- MEMBER 1 -->
+    <div class="team-card">
+
+      <div class="team-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+
+      <h3>Srinjana Deb</h3>
+      <h5>Web Development</h5>
+
+      <p>
+        Responsible for full-stack development using MERN stack.
+        Worked on UI design, backend APIs, and database integration.
+      </p>
+
+      <div class="social-links">
+        <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:example@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+
+    </div>
+
+    <!-- MEMBER 2 -->
+    <div class="team-card">
+
+      <div class="team-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+
+      <h3>Apoorva Sharma</h3>
+      <h5>ML & Deep Learning</h5>
+
+      <p>
+        Worked on model training, data preprocessing,
+        and building intrusion detection algorithms using ML & DL.
+      </p>
+
+      <div class="social-links">
+        <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:example@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>
+
+<!-- SCRIPT -->
+<script>
+function initAbout() {
+  setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("aboutPage").style.display = "block";
+  }, 200);
+}
+</script>
+
+<%- include('partials/loadfoot') %>
+</body>

@@ -1,0 +1,95 @@
+<%-include('partials/header') %>
+<%-include('partials/loadhead') %>
+
+<body onload="myFunction()" style="margin:0;">
+
+<div id="loader"></div>
+
+<div style="display:none;" id="myDiv" class="animate-bottom">
+
+  <div class="container-fluid model-page-wrapper">
+
+    <div class="row justify-content-center">
+
+      <div class="col-12 col-lg-10">
+
+        <div class="model-table-container text-center">
+          <h2 class="model-title">
+            CONVOLUTION NEURAL NETWORK BINARY-CLASS CLASSIFICATION TABLE
+          </h2>
+        </div>
+
+        <div class="table-responsive model-table-box">
+          <table class="table table-striped model-table">
+            <thead>
+              <tr>
+                <th> </th>
+                <th>PRECISION</th>
+                <th>RECALL</th>
+                <th>F1 SCORE</th>
+                <th>SUPPORT</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <th>ATTACK</th>
+                <td>0.97</td>
+                <td>0.96</td>
+                <td>0.96</td>
+                <td>12198</td>
+              </tr>
+
+              <tr>
+                <th>NORMAL</th>
+                <td>0.94</td>
+                <td>0.96</td>
+                <td>0.95</td>
+                <td>9217</td>
+              </tr>
+
+              <tr>
+                <th>ACCURACY</th>
+                <td>-</td>
+                <td>-</td>
+                <td>0.96</td>
+                <td>21415</td>
+              </tr>
+
+              <tr>
+                <th>MACRO AVG</th>
+                <td>0.96</td>
+                <td>0.96</td>
+                <td>0.96</td>
+                <td>21415</td>
+              </tr>
+
+              <tr>
+                <th>WEIGHTED AVG</th>
+                <td>0.96</td>
+                <td>0.96</td>
+                <td>0.96</td>
+                <td>21415</td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+<%-include('partials/footer') %>
+</div>
+
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 200);
+}
+</script>
+
+<%-include('partials/loadfoot') %>

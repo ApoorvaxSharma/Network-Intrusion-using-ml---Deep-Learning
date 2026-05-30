@@ -1,0 +1,124 @@
+<%- include('partials/header') %>
+<%- include('partials/loadhead') %>
+
+<body onload="initPage()" class="app-body">
+
+<div id="loader"></div>
+
+<!-- MAIN WRAPPER -->
+<div id="myDiv" class="dashboard-wrapper container py-5 animate-bottom" style="display:none;">
+
+  <!-- TITLE -->
+  <div class="page-header text-center mb-5">
+    <h1 class="page-title">Network Intrusion Detection System</h1>
+    <p class="page-subtitle">Choose an option to run prediction tasks</p>
+  </div>
+
+  <!-- GRID CARDS -->
+  <div class="card-grid">
+
+    <!-- RANDOM ROW -->
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-random"></i>
+      </div>
+
+      <h3>Random Row Predict</h3>
+      <p>Pick a single row from validation data and predict attack type.</p>
+
+      <a href="/secrets" class="btn-primary">Predict</a>
+    </div>
+
+    <!-- CSV UPLOAD -->
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        <i class="fas fa-file-csv"></i>
+      </div>
+
+      <h3>CSV File Prediction</h3>
+      <p>Upload a dataset (CSV/TXT) and classify all rows using ML models.</p>
+
+      <!-- FORM -->
+      <form id="uploadForm" enctype="multipart/form-data" action="/uploadjavatpoint" method="post">
+
+        <select name="selected_model" class="input-select">
+          <option disabled selected>Select Algorithm</option>
+          <option value="knn">KNN - 97%</option>
+          <option value="rf">Random Forest - 97%</option>
+          <option value="cnn">CNN - 95%</option>
+          <option value="lstm">LSTM - 95%</option>
+        </select>
+
+        <input type="file"
+               id="fileInput"
+               name="myfile"
+               accept=".csv,.txt"
+               class="input-file"
+               onchange="enableUpload()" />
+
+        <button type="submit"
+                id="uploadBtn"
+                class="btn-primary"
+                onclick="startProcessing()"
+                disabled>
+          Predict
+        </button>
+
+        <p id="status" class="status-text"></p>
+
+      </form>
+
+      <!-- DOWNLOAD -->
+      <form action="/download-file">
+        <button id="downloadBtn" class="btn-secondary" type="submit" disabled>
+          Download Result File
+        </button>
+      </form>
+
+    </div>
+
+    <!-- PARAMETERS -->
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        <i class="fas fa-network-wired"></i>
+      </div>
+
+      <h3>Network Parameters</h3>
+      <p>Enter custom network parameters for real-time attack prediction.</p>
+
+      <a href="/parameters" class="btn-primary">Predict</a>
+    </div>
+
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<!-- SCRIPT -->
+<script>
+function initPage() {
+  setTimeout(showPage, 200);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+
+/* Enable upload button */
+function enableUpload() {
+  document.getElementById("uploadBtn").disabled = false;
+}
+
+/* After submit */
+function startProcessing() {
+  setTimeout(() => {
+    document.getElementById("downloadBtn").disabled = false;
+  }, 10000);
+}
+</script>
+
+<%- include('partials/loadfoot') %>
+</body>

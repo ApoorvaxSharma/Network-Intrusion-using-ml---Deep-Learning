@@ -1,0 +1,98 @@
+<%-include('partials/header') %>
+
+<%-include('partials/loadhead') %>
+
+<body onload="myFunction()" class="table-body">
+
+<div id="loader"></div>
+
+<div style="display:none;" id="myDiv" class="animate-bottom table-wrapper">
+
+  <div class="container-fluid table-container">
+
+    <div class="table-header">
+      <h1 class="table-title">
+        K-NEAREST NEIGHBOUR BINARY-CLASS CLASSIFICATION TABLE
+      </h1>
+    </div>
+
+    <div class="table-card">
+
+      <table class="table table-striped custom-table">
+        <thead class="table-head">
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">PRECISION</th>
+            <th scope="col">RECALL</th>
+            <th scope="col">F-1 SCORE</th>
+            <th scope="col">SUPPORT</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <th scope="row">NORMAL</th>
+            <td>0.97</td>
+            <td>0.97</td>
+            <td>0.97</td>
+            <td>9246</td>
+          </tr>
+
+          <tr>
+            <th scope="row">ATTACK</th>
+            <td>0.98</td>
+            <td>0.98</td>
+            <td>0.98</td>
+            <td>12169</td>
+          </tr>
+
+          <tr>
+            <th scope="row">ACCURACY</th>
+            <td></td>
+            <td></td>
+            <td>0.98</td>
+            <td>21415</td>
+          </tr>
+
+          <tr>
+            <th scope="row">MACRO AVERAGE</th>
+            <td>0.98</td>
+            <td>0.98</td>
+            <td>0.98</td>
+            <td>21415</td>
+          </tr>
+
+          <tr>
+            <th scope="row">WEIGHTED AVERAGE</th>
+            <td>0.98</td>
+            <td>0.98</td>
+            <td>0.98</td>
+            <td>21415</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+  <%-include('partials/footer') %>
+
+</div>
+
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 200);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+</script>
+
+<%-include('partials/loadfoot') %>

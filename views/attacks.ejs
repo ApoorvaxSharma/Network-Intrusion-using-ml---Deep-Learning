@@ -1,0 +1,98 @@
+<%- include('partials/header') %>
+<%- include('partials/loadhead') %>
+
+<body onload="initPage()" class="app-body">
+
+<div id="loader"></div>
+
+<!-- MAIN WRAPPER -->
+<div id="pageView" class="attack-wrapper container py-5 animate-bottom" style="display:none;">
+
+  <!-- TITLE -->
+  <div class="page-header text-center mb-5">
+    <h1 class="page-title">Types of Network Attacks</h1>
+    <p class="page-subtitle">Understanding different intrusion categories in NIDS</p>
+  </div>
+
+  <!-- CAROUSEL CARD -->
+  <div class="carousel-card">
+
+    <div id="attackCarousel" class="carousel slide" data-ride="carousel">
+
+      <div class="carousel-inner">
+
+        <!-- DOS -->
+        <div class="carousel-item active">
+          <div class="attack-card">
+            <h3 class="attack-title">Denial of Service (DoS)</h3>
+            <p class="attack-text">
+              A DoS attack floods a system or network with traffic, making it unavailable to legitimate users.
+              It can crash services or overload resources, preventing normal access.
+            </p>
+          </div>
+        </div>
+
+        <!-- PROBE -->
+        <div class="carousel-item">
+          <div class="attack-card">
+            <h3 class="attack-title">Probe Attack</h3>
+            <p class="attack-text">
+              Probe attacks scan networks to find vulnerabilities such as open ports or weak configurations,
+              which can be exploited later for unauthorized access.
+            </p>
+          </div>
+        </div>
+
+        <!-- R2L -->
+        <div class="carousel-item">
+          <div class="attack-card">
+            <h3 class="attack-title">Remote to Local (R2L)</h3>
+            <p class="attack-text">
+              In R2L attacks, an intruder sends packets over a network to gain unauthorized local access
+              without having proper credentials.
+            </p>
+          </div>
+        </div>
+
+        <!-- U2R -->
+        <div class="carousel-item">
+          <div class="attack-card">
+            <h3 class="attack-title">User to Root (U2R)</h3>
+            <p class="attack-text">
+              U2R attacks occur when a normal user gradually escalates privileges to gain root-level access
+              through exploitation of system vulnerabilities.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CONTROLS -->
+      <a class="carousel-control-prev" href="#attackCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </a>
+
+      <a class="carousel-control-next" href="#attackCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>
+
+<!-- SCRIPT -->
+<script>
+function initPage() {
+  setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("pageView").style.display = "block";
+  }, 200);
+}
+</script>
+
+<%- include('partials/loadfoot') %>
+</body>

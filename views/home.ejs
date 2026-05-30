@@ -1,0 +1,161 @@
+<%- include('partials/header') %>
+<%- include('partials/loadhead') %>
+
+<body class="app-body">
+
+<!-- HERO SECTION ONLY (NO NAVBAR HERE) -->
+<section class="hero-section">
+
+  <div class="container">
+
+    <div class="hero-grid">
+
+      <!-- TEXT -->
+      <div class="hero-text">
+
+        <h1 class="hero-title">
+          Network Intrusion Detection System
+        </h1>
+
+        <p class="hero-subtitle">
+          AI-powered cyber attack detection using Machine Learning & Deep Learning models
+        </p>
+
+        <div class="hero-buttons">
+          <a class="btn-primary" href="/submit">
+            <i class="fa-solid fa-user"></i> Sign In
+          </a>
+
+          <a class="btn-outline" href="/register">
+            <i class="fa-solid fa-user-plus"></i> Sign Up
+          </a>
+        </div>
+
+      </div>
+
+      <!-- IMAGE (SMALLER PHONE) -->
+      <div class="hero-image">
+        <img src="css/iphone6.png" class="phone-mockup" alt="dashboard">
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+
+  <div class="container">
+
+    <div class="section-title">
+      <h2>System Features</h2>
+      <p>Core capabilities of the intrusion detection system</p>
+    </div>
+
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <i class="fa-solid fa-clock"></i>
+        <h3>Traffic Processing</h3>
+        <p>Convert network traffic into structured signatures</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-solid fa-brain"></i>
+        <h3>Prevent System</h3>
+        <p>Automatically respond to detected threats</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-solid fa-masks-theater"></i>
+        <h3>Threat Reporting</h3>
+        <p>Log and report malicious activities</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-solid fa-book-skull"></i>
+        <h3>Classification</h3>
+        <p>Classify attacks using ML & DL models</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-solid fa-users-rays"></i>
+        <h3>Anomaly Detection</h3>
+        <p>Detect unknown (zero-day) attacks</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fa-brands fa-searchengin"></i>
+        <h3>Signature Matching</h3>
+        <p>Match traffic patterns with known threats</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ATTACK SECTION -->
+<section class="attack-section">
+
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Types of Network Attacks</h2>
+    </div>
+
+    <div id="attackCarousel" class="carousel slide attack-carousel" data-ride="carousel">
+
+      <div class="carousel-inner">
+
+        <div class="carousel-item active">
+          <div class="attack-card">
+            <h3>Denial of Service (DoS)</h3>
+            <p>Flooding a system to make it unavailable to users.</p>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="attack-card">
+            <h3>Probe Attack</h3>
+            <p>Scanning networks to discover vulnerabilities.</p>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="attack-card">
+            <h3>Remote to Local (R2L)</h3>
+            <p>Unauthorized remote access to local systems.</p>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="attack-card">
+            <h3>User to Root (U2R)</h3>
+            <p>Privilege escalation from user to root access.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <a class="carousel-control-prev" href="#attackCarousel" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </a>
+
+      <a class="carousel-control-next" href="#attackCarousel" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<%- include('partials/footer') %>
+<%- include('partials/loadfoot') %>
+
+</body>

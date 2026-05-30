@@ -1,0 +1,152 @@
+<%- include('partials/header') %>
+<%- include('partials/loadhead') %>
+
+<body onload="myFunction()" style="margin:0;">
+
+<div id="loader"></div>
+
+<!-- MAIN WRAPPER -->
+<div id="myDiv" class="dashboard-wrapper container py-5 animate-bottom" style="display:none;">
+
+  <!-- PAGE TITLE -->
+  <div class="section-title-box mb-5">
+    <h1>Network Intrusion Detection Results</h1>
+  </div>
+
+  <!-- ================= BINARY CLASSIFICATION ================= -->
+  <div class="card metrics-card mb-5">
+
+    <div class="metrics-header">
+      Binary Classification Table
+    </div>
+
+    <div class="card-body table-responsive">
+      <table class="table metrics-table table-dark table-striped table-hover text-center align-middle">
+
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Algorithm</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1 Score</th>
+            <th>Support</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- NORMAL -->
+          <tr>
+            <td rowspan="4">NORMAL</td>
+            <td>KNN</td><td>0.97</td><td>0.97</td><td>0.97</td><td>9246</td>
+          </tr>
+          <tr>
+            <td>Random Forest</td><td>0.99</td><td>0.96</td><td>0.97</td><td>9847</td>
+          </tr>
+          <tr>
+            <td>CNN</td><td>0.94</td><td>0.96</td><td>0.95</td><td>9217</td>
+          </tr>
+          <tr>
+            <td>LSTM</td><td>0.94</td><td>0.96</td><td>0.95</td><td>9217</td>
+          </tr>
+
+          <!-- ATTACK -->
+          <tr>
+            <td rowspan="4">ATTACK</td>
+            <td>KNN</td><td>0.98</td><td>0.98</td><td>0.98</td><td>12169</td>
+          </tr>
+          <tr>
+            <td>Random Forest</td><td>0.97</td><td>0.99</td><td>0.98</td><td>11928</td>
+          </tr>
+          <tr>
+            <td>CNN</td><td>0.97</td><td>0.96</td><td>0.96</td><td>12198</td>
+          </tr>
+          <tr>
+            <td>LSTM</td><td>0.97</td><td>0.96</td><td>0.96</td><td>12198</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= MULTI CLASS ================= -->
+  <div class="card metrics-card">
+
+    <div class="metrics-header">
+      Multi-Class Classification Table
+    </div>
+
+    <div class="card-body table-responsive">
+
+      <table class="table metrics-table table-dark table-striped table-hover text-center align-middle">
+
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Algorithm</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1 Score</th>
+            <th>Support</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <!-- DOS -->
+          <tr>
+            <td rowspan="4">DOS</td>
+            <td>KNN</td><td>0.99</td><td>0.99</td><td>0.99</td><td>6834</td>
+          </tr>
+          <tr>
+            <td>Random Forest</td><td>1.00</td><td>1.00</td><td>1.00</td><td>6822</td>
+          </tr>
+          <tr>
+            <td>CNN</td><td>0.99</td><td>0.97</td><td>0.98</td><td>6822</td>
+          </tr>
+          <tr>
+            <td>LSTM</td><td>1.00</td><td>0.97</td><td>0.98</td><td>6822</td>
+          </tr>
+
+          <!-- NORMAL -->
+          <tr>
+            <td rowspan="4">NORMAL</td>
+            <td>KNN</td><td>0.97</td><td>0.97</td><td>0.97</td><td>9270</td>
+          </tr>
+          <tr>
+            <td>Random Forest</td><td>0.99</td><td>0.95</td><td>0.97</td><td>9513</td>
+          </tr>
+          <tr>
+            <td>CNN</td><td>0.92</td><td>0.98</td><td>0.95</td><td>9217</td>
+          </tr>
+          <tr>
+            <td>LSTM</td><td>0.94</td><td>0.97</td><td>0.96</td><td>9217</td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>
+
+<!-- SCRIPT FIX -->
+<script>
+function myFunction() {
+  setTimeout(showPage, 200);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+</script>
+
+<%- include('partials/loadfoot') %>
+
+</body>

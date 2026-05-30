@@ -1,0 +1,104 @@
+<%-include('partials/header') %>
+<%-include('partials/loadhead') %>
+
+<body onload="myFunction()" style="margin:0;">
+
+<div id="loader"></div>
+
+<div style="display:none;" id="myDiv" class="animate-bottom">
+
+  <div class="container-fluid model-page-wrapper">
+
+    <div class="row justify-content-center">
+
+      <div class="col-12 col-lg-8">
+
+        <div class="param-form-container">
+
+          <h2 class="model-title text-center">
+            PARAMETERS
+          </h2>
+
+          <form action="/parameters" method="post" class="param-form">
+
+            <div class="form-group-box">
+              <select name="protocol_type" class="form-control custom-input">
+                <option disabled selected>Protocol Type</option>
+                <option value="tcp">TCP</option>
+                <option value="udp">UDP</option>
+                <option value="icmp">ICMP</option>
+              </select>
+            </div>
+
+            <div class="form-group-box">
+              <select name="service" class="form-control custom-input">
+                <option disabled selected>Service</option>
+                <option value="http">HTTP</option>
+                <option value="ftp">FTP</option>
+                <option value="ssh">SSH</option>
+                <option value="telnet">TELNET</option>
+                <option value="smtp">SMTP</option>
+                <option value="other">OTHER</option>
+              </select>
+            </div>
+
+            <div class="form-group-box">
+              <select name="flag" class="form-control custom-input">
+                <option disabled selected>Flag</option>
+                <option value="S0">S0</option>
+                <option value="S1">S1</option>
+                <option value="S2">S2</option>
+                <option value="SF">SF</option>
+                <option value="REJ">REJ</option>
+              </select>
+            </div>
+
+            <div class="param-grid">
+
+              <input class="custom-input" type="text" name="logged_in" placeholder="logged_in">
+              <input class="custom-input" type="text" name="count" placeholder="count">
+              <input class="custom-input" type="text" name="srv_serror_rate" placeholder="srv_serror_rate">
+              <input class="custom-input" type="text" name="srv_rerror_rate" placeholder="srv_rerror_rate">
+              <input class="custom-input" type="text" name="same_srv_rate" placeholder="same_srv_rate">
+              <input class="custom-input" type="text" name="diff_srv_rate" placeholder="diff_srv_rate">
+              <input class="custom-input" type="text" name="dst_host_count" placeholder="dst_host_count">
+              <input class="custom-input" type="text" name="dst_host_srv_count" placeholder="dst_host_srv_count">
+              <input class="custom-input" type="text" name="dst_host_same_srv_rate" placeholder="dst_host_same_srv_rate">
+              <input class="custom-input" type="text" name="dst_host_diff_srv_rate" placeholder="dst_host_diff_srv_rate">
+              <input class="custom-input" type="text" name="dst_host_same_src_port_rate" placeholder="dst_host_same_src_port_rate">
+              <input class="custom-input" type="text" name="dst_host_serror_rate" placeholder="dst_host_serror_rate">
+              <input class="custom-input" type="text" name="dst_host_rerror_rate" placeholder="dst_host_rerror_rate">
+
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary param-btn">
+                Predict
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+<%-include('partials/footer') %>
+</div>
+
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 200);
+}
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+</script>
+
+<%-include('partials/loadfoot') %>

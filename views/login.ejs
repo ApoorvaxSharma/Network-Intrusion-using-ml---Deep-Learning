@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+
+<%-include('partials/loadhead') %>
+
+<body onload="myFunction()" class="auth-body">
+
+<div id="loader"></div>
+
+<div style="display:none;" id="myDiv" class="animate-bottom">
+
+  <div class="row">
+
+    <div class="login-box">
+
+      <h1>Login</h1>
+
+      <form action="/login" method="post">
+
+        <div class="textbox">
+          <i class="fas fa-user auth-icon"></i>
+          <input type="email" placeholder="User-Name (Email)" name="username" class="auth-input">
+        </div>
+
+        <div class="textbox">
+          <i class="fas fa-lock auth-icon"></i>
+          <input type="password" placeholder="Password" name="password" class="auth-input">
+        </div>
+
+        <a href="/register" class="auth-link-right">
+          Don't have an account? Sign Up
+        </a>
+
+        <button type="submit" class="btn btn-success">
+          LOGIN
+        </button>
+
+      </form>
+
+       <a class="btn btn-block btn-social btn-google btn-dark" style="text-align: center;background-color: #dd4b39" href="/auth/google" role="button">
+        <i class="fab fa-google"></i>
+        Login with Google
+      </a>
+
+    </div>
+
+  </div>
+
+  <%-include('partials/footer') %>
+</div>
+
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 200);
+}
+ function showPage()
+{
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+</script>
+
+<%-include('partials/loadfoot') %>
