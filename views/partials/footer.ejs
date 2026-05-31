@@ -1,17 +1,207 @@
-  <!-- Footer -->
+<!-- ===================== FOOTER ===================== -->
+<footer class="sn-footer">
 
-  <footer class="colored-section" id="footer">
-    <div class="container-fluid">
-      <a href="mailto:intrusiondetection786@gmail.com" target="_blank"><i class="social-icon fas fa-envelope fa-2x" style="color: #fff;"></i></a>
-      <!-- <a href="https://www.shaiksohail.xyz/" target="_blank"><i class="social-icon fas fa-regular fa-globe fa-2x" style="color: #fff;"></i></a> -->
-      <a href="" target="_blank"><i class="social-icon fab fa-github fa-2x" style="color: #fff;"></i></a>
-      <a href="" target="_blank"><i class="social-icon fab fa-linkedin fa-2x" style="color: #fff;"></i></a>
-      
-      <p>© <%= currentYear %> NIDS</p>
+  <div class="sn-footer-inner">
+
+    <!-- Brand column -->
+    <div class="sn-footer-brand">
+      <a href="/" class="sn-footer-logo">
+        <span class="sn-footer-icon"><i class="fas fa-shield-alt"></i></span>
+        <span>Secure<span class="sn-footer-accent">Net</span></span>
+      </a>
+      <p class="sn-footer-tagline">
+        AI-powered network intrusion detection using Machine Learning &amp; Deep Learning.
+      </p>
     </div>
-  </footer>
 
+    <!-- Links column -->
+    <div class="sn-footer-links">
+      <span class="sn-footer-col-title">Navigation</span>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/submit">Predict</a></li>
+        <li><a href="/features">Features</a></li>
+        <li><a href="/attacks">Attacks</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/stats">Stats</a></li>
+      </ul>
+    </div>
+
+    <!-- Social column -->
+    <div class="sn-footer-social-col">
+      <span class="sn-footer-col-title">Connect</span>
+      <div class="sn-footer-socials">
+        <a href="mailto:intrusiondetection786@gmail.com" title="Email" aria-label="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://github.com/ApoorvaxSharma/Network-Intrusion-using-ml---Deep-Learning" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="#" target="_blank" title="LinkedIn" aria-label="LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="sn-footer-bottom">
+    <span>© <%= currentYear %> SecureNet &mdash; Network Intrusion Detection System</span>
+    <span class="sn-footer-divider">·</span>
+    <span>Built with ML &amp; Deep Learning</span>
+  </div>
+
+</footer>
+
+<style>
+/* ============================================================
+   SECURENET FOOTER — matches dark gradient main content theme
+   ============================================================ */
+.sn-footer {
+  background: rgba(10, 22, 28, 0.92);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-family: 'Montserrat', sans-serif;
+  color: rgba(255,255,255,0.65);
+  padding: 52px 0 0;
+  margin-top: auto;
+}
+
+.sn-footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 28px 40px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+}
+
+/* Brand */
+.sn-footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #e8f4f8;
+  text-decoration: none;
+  margin-bottom: 14px;
+}
+
+.sn-footer-logo:hover { text-decoration: none; color: #e8f4f8; }
+
+.sn-footer-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #00adb5, #24a0ed);
+  color: #fff;
+  font-size: 0.9rem;
+  box-shadow: 0 0 10px rgba(0,173,181,0.4);
+  flex-shrink: 0;
+}
+
+.sn-footer-accent { color: #00adb5; }
+
+.sn-footer-tagline {
+  font-size: 0.83rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.5);
+  max-width: 300px;
+  margin: 0;
+}
+
+/* Nav links column */
+.sn-footer-col-title {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #00adb5;
+  margin-bottom: 16px;
+}
+
+.sn-footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sn-footer-links ul li a {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.86rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.sn-footer-links ul li a:hover { color: #fff; }
+
+/* Social icons */
+.sn-footer-socials {
+  display: flex;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.sn-footer-socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.6);
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.sn-footer-socials a:hover {
+  background: rgba(0,173,181,0.18);
+  border-color: rgba(0,173,181,0.5);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Bottom bar */
+.sn-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 16px 28px;
+  max-width: 1280px;
+  margin: 0 auto;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sn-footer-divider { opacity: 0.4; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sn-footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .sn-footer-brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 480px) {
+  .sn-footer-inner { grid-template-columns: 1fr; }
+  .sn-footer-bottom { justify-content: center; text-align: center; }
+}
+</style>
 
 </body>
-
 </html>

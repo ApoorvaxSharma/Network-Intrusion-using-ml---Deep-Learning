@@ -1,90 +1,271 @@
-<!-- <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <title>NIDS</title>
+  <title>SecureNet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://kit.fontawesome.com/5bf56866c4.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/boostrap-social.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" crossorigin="anonymous">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="css/homeStyles.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body> -->
 
+<body>
 
+<!-- ===================== NAVBAR ===================== -->
+<nav class="sn-navbar" id="sn-navbar">
+  <div class="sn-nav-inner">
 
+    <!-- Brand -->
+    <a class="sn-brand" href="/">
+      <span class="sn-brand-icon">
+        <i class="fas fa-shield-alt"></i>
+      </span>
+      <span class="sn-brand-text">Secure<span class="sn-brand-accent">Net</span></span>
+    </a>
 
-      <!DOCTYPE html>
-      <html>
-      
-      <head>
-        <meta charset="utf-8">
-        <title>NIDS</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet">
-        <script src="https://kit.fontawesome.com/5bf56866c4.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-        <!-- CSS Stylesheets -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/homeStyles.css">
-        <link rel="stylesheet" href="css/styles.css">
-      
-        <!-- Font Awesome -->
-        <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
-      
-        <!-- Bootstrap Scripts -->
-        
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-      </head>
-      
-      <body>
-      
-        <section class="colored-section" id="title">
+    <!-- Hamburger -->
+    <button class="sn-hamburger" id="sn-hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
 
-          <div class="container-fluid">
-      
-            <!-- Nav Bar -->
-      
-            <nav class="navbar navbar-expand-lg navbar-dark">
-      
-              <a class="navbar-brand" href="" >NIDS</a>
-      
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
-                  <span class="navbar-toggler-icon"></span>
-              </button>
-      
-              <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-      
-                <ul class="navbar-nav ml-auto">
-                  <li class="nav-item" >
-                    <a class="nav-link" href="/">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/submit">Predict</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/features">Features</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/attacks">Attacks</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
-                  </li>
-                  <li>
-                    <a class="nav-link" href="/stats">Stats</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                  </li>
-                  
-                </ul>
-      
-              </div>
-            </nav>
-            </div>
-            </section>
+    <!-- Links -->
+    <ul class="sn-nav-links" id="sn-nav-links">
+      <li><a href="/" class="sn-nav-link">Home</a></li>
+      <li><a href="/submit" class="sn-nav-link">Predict</a></li>
+      <li><a href="/features" class="sn-nav-link">Features</a></li>
+      <li><a href="/attacks" class="sn-nav-link">Attacks</a></li>
+      <li><a href="/about" class="sn-nav-link">About</a></li>
+      <li><a href="/stats" class="sn-nav-link">Stats</a></li>
+      <li><a href="/logout" class="sn-nav-link sn-nav-logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a></li>
+    </ul>
+
+  </div>
+</nav>
+
+<style>
+/* ============================================================
+   SECURENET NAVBAR — matches dark gradient main content theme
+   ============================================================ */
+:root {
+  --sn-bg-start:   #0f2027;
+  --sn-bg-mid:     #203a43;
+  --sn-bg-end:     #2c5364;
+  --sn-teal:       #00adb5;
+  --sn-blue:       #24a0ed;
+  --sn-glass:      rgba(255,255,255,0.05);
+  --sn-border:     rgba(255,255,255,0.10);
+  --sn-text:       #e8f4f8;
+  --sn-muted:      rgba(255,255,255,0.65);
+  --sn-font:       'Montserrat', sans-serif;
+  --sn-nav-h:      68px;
+}
+
+/* Reset any legacy navbar styles */
+#title, #title .container-fluid { all: unset; }
+
+/* Sticky bar */
+.sn-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  height: var(--sn-nav-h);
+  background: rgba(15, 32, 39, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--sn-border);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  font-family: var(--sn-font);
+  transition: background 0.3s ease;
+}
+
+.sn-navbar.sn-scrolled {
+  background: rgba(15, 32, 39, 0.97);
+}
+
+.sn-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Brand */
+.sn-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.45rem;
+  letter-spacing: -0.5px;
+  color: var(--sn-text);
+}
+
+.sn-brand:hover { text-decoration: none; color: var(--sn-text); }
+
+.sn-brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--sn-teal), var(--sn-blue));
+  font-size: 0.95rem;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(0,173,181,0.45);
+}
+
+.sn-brand-text { color: var(--sn-text); }
+.sn-brand-accent { color: var(--sn-teal); }
+
+/* Nav links list */
+.sn-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sn-nav-link {
+  display: block;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--sn-muted);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+
+.sn-nav-link:hover {
+  color: #fff;
+  background: var(--sn-glass);
+  text-decoration: none;
+}
+
+/* Active page highlight */
+.sn-nav-link.active {
+  color: var(--sn-teal);
+  background: rgba(0,173,181,0.12);
+}
+
+/* Logout pill */
+.sn-nav-logout {
+  margin-left: 8px;
+  padding: 7px 16px;
+  border: 1px solid rgba(0,173,181,0.45);
+  color: var(--sn-teal) !important;
+  border-radius: 20px;
+  font-size: 0.82rem;
+}
+
+.sn-nav-logout:hover {
+  background: rgba(0,173,181,0.18) !important;
+  color: #fff !important;
+  border-color: var(--sn-teal);
+}
+
+/* Hamburger (mobile) */
+.sn-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sn-hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--sn-muted);
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* Mobile menu */
+@media (max-width: 900px) {
+  .sn-hamburger { display: flex; }
+
+  .sn-nav-links {
+    position: absolute;
+    top: var(--sn-nav-h);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    padding: 14px 18px 18px;
+    background: rgba(15,32,39,0.97);
+    border-bottom: 1px solid var(--sn-border);
+    backdrop-filter: blur(18px);
+    transform: translateY(-12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+  }
+
+  .sn-nav-links.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+
+  .sn-nav-link { padding: 11px 14px; font-size: 0.95rem; }
+  .sn-nav-logout { margin-left: 0; margin-top: 8px; }
+}
+</style>
+
+<script>
+// Hamburger toggle
+document.getElementById('sn-hamburger').addEventListener('click', function() {
+  document.getElementById('sn-nav-links').classList.toggle('open');
+});
+
+// Scroll tint
+window.addEventListener('scroll', function() {
+  document.getElementById('sn-navbar').classList.toggle('sn-scrolled', window.scrollY > 10);
+});
+
+// Auto-highlight active link
+(function() {
+  var path = window.location.pathname;
+  document.querySelectorAll('.sn-nav-link').forEach(function(a) {
+    if (a.getAttribute('href') === path ||
+        (path === '/' && a.getAttribute('href') === '/')) {
+      a.classList.add('active');
+    }
+  });
+})();
+</script>
