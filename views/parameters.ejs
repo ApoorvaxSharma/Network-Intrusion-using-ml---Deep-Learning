@@ -1,104 +1,328 @@
-<%-include('partials/header') %>
-<%-include('partials/loadhead') %>
+<%- include('partials/header') %>
+<%- include('partials/loadhead') %>
 
 <body onload="myFunction()" style="margin:0;">
-
 <div id="loader"></div>
 
 <div style="display:none;" id="myDiv" class="animate-bottom">
 
-  <div class="container-fluid model-page-wrapper">
+<div class="nids-page">
 
-    <div class="row justify-content-center">
+  <!-- Page header -->
+  <div class="nids-page-header">
+    <div class="nids-header-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    </div>
+    <div>
+      <h1 class="nids-page-title">Network Traffic Analysis</h1>
+      <p class="nids-page-sub">Enter connection parameters to classify traffic across 4 ML models</p>
+    </div>
+  </div>
 
-      <div class="col-12 col-lg-8">
+  <form action="/parameters" method="post" id="predForm">
 
-        <div class="param-form-container">
+    <!-- Section 1: Connection Identifiers -->
+    <div class="nids-section">
+      <div class="nids-section-label">
+        <span class="nids-section-num">1</span>
+        Connection Identifiers
+      </div>
+      <div class="nids-grid-3">
 
-          <h2 class="model-title text-center">
-            PARAMETERS
-          </h2>
+        <div class="nids-field">
+          <label class="nids-label">Protocol Type <span class="nids-required">*</span></label>
+          <select name="protocol_type" class="nids-select" required>
+            <option value="" disabled selected>Select protocol</option>
+            <option value="tcp">TCP — Transmission Control Protocol</option>
+            <option value="udp">UDP — User Datagram Protocol</option>
+            <option value="icmp">ICMP — Internet Control Message Protocol</option>
+          </select>
+          <span class="nids-hint">Network layer protocol used</span>
+        </div>
 
-          <form action="/parameters" method="post" class="param-form">
+        <div class="nids-field">
+          <label class="nids-label">Service <span class="nids-required">*</span></label>
+          <select name="service" class="nids-select" required>
+            <option value="" disabled selected>Select service</option>
+            <optgroup label="Common">
+              <option value="http">HTTP</option>
+              <option value="ftp">FTP</option>
+              <option value="ftp_data">FTP Data</option>
+              <option value="ssh">SSH</option>
+              <option value="telnet">Telnet</option>
+              <option value="smtp">SMTP</option>
+              <option value="domain">DNS (domain)</option>
+              <option value="domain_u">DNS UDP (domain_u)</option>
+            </optgroup>
+            <optgroup label="Other">
+              <option value="auth">Auth</option>
+              <option value="finger">Finger</option>
+              <option value="login">Login</option>
+              <option value="pop_3">POP3</option>
+              <option value="imap4">IMAP4</option>
+              <option value="sunrpc">Sun RPC</option>
+              <option value="ntp_u">NTP</option>
+              <option value="private">Private</option>
+              <option value="other">Other</option>
+              <option value="ecr_i">ECR (ICMP echo)</option>
+              <option value="eco_i">ECO (ICMP echo)</option>
+              <option value="urp_i">URP (ICMP)</option>
+              <option value="red_i">RED (ICMP)</option>
+              <option value="tim_i">TIM (ICMP)</option>
+            </optgroup>
+          </select>
+          <span class="nids-hint">Destination network service</span>
+        </div>
 
-            <div class="form-group-box">
-              <select name="protocol_type" class="form-control custom-input">
-                <option disabled selected>Protocol Type</option>
-                <option value="tcp">TCP</option>
-                <option value="udp">UDP</option>
-                <option value="icmp">ICMP</option>
-              </select>
-            </div>
-
-            <div class="form-group-box">
-              <select name="service" class="form-control custom-input">
-                <option disabled selected>Service</option>
-                <option value="http">HTTP</option>
-                <option value="ftp">FTP</option>
-                <option value="ssh">SSH</option>
-                <option value="telnet">TELNET</option>
-                <option value="smtp">SMTP</option>
-                <option value="other">OTHER</option>
-              </select>
-            </div>
-
-            <div class="form-group-box">
-              <select name="flag" class="form-control custom-input">
-                <option disabled selected>Flag</option>
-                <option value="S0">S0</option>
-                <option value="S1">S1</option>
-                <option value="S2">S2</option>
-                <option value="SF">SF</option>
-                <option value="REJ">REJ</option>
-              </select>
-            </div>
-
-            <div class="param-grid">
-
-              <input class="custom-input" type="text" name="logged_in" placeholder="logged_in">
-              <input class="custom-input" type="text" name="count" placeholder="count">
-              <input class="custom-input" type="text" name="srv_serror_rate" placeholder="srv_serror_rate">
-              <input class="custom-input" type="text" name="srv_rerror_rate" placeholder="srv_rerror_rate">
-              <input class="custom-input" type="text" name="same_srv_rate" placeholder="same_srv_rate">
-              <input class="custom-input" type="text" name="diff_srv_rate" placeholder="diff_srv_rate">
-              <input class="custom-input" type="text" name="dst_host_count" placeholder="dst_host_count">
-              <input class="custom-input" type="text" name="dst_host_srv_count" placeholder="dst_host_srv_count">
-              <input class="custom-input" type="text" name="dst_host_same_srv_rate" placeholder="dst_host_same_srv_rate">
-              <input class="custom-input" type="text" name="dst_host_diff_srv_rate" placeholder="dst_host_diff_srv_rate">
-              <input class="custom-input" type="text" name="dst_host_same_src_port_rate" placeholder="dst_host_same_src_port_rate">
-              <input class="custom-input" type="text" name="dst_host_serror_rate" placeholder="dst_host_serror_rate">
-              <input class="custom-input" type="text" name="dst_host_rerror_rate" placeholder="dst_host_rerror_rate">
-
-            </div>
-
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary param-btn">
-                Predict
-              </button>
-            </div>
-
-          </form>
-
+        <div class="nids-field">
+          <label class="nids-label">Flag <span class="nids-required">*</span></label>
+          <select name="flag" class="nids-select" required>
+            <option value="" disabled selected>Select flag</option>
+            <option value="SF">SF — Normal, established</option>
+            <option value="S0">S0 — Connection attempted, no reply</option>
+            <option value="S1">S1 — Connection established, not terminated</option>
+            <option value="S2">S2 — Connection established, close initiated by originator</option>
+            <option value="S3">S3 — Connection established, close initiated by responder</option>
+            <option value="REJ">REJ — Connection rejected</option>
+            <option value="RSTO">RSTO — Connection reset by originator</option>
+            <option value="RSTR">RSTR — Connection reset by responder</option>
+            <option value="RSTOS0">RSTOS0 — Originator sent SYN then RST</option>
+            <option value="OTH">OTH — Other</option>
+            <option value="SH">SH — Originator sent SYN then FIN</option>
+          </select>
+          <span class="nids-hint">Connection completion status</span>
         </div>
 
       </div>
     </div>
 
-  </div>
+    <!-- Section 2: Basic Features -->
+    <div class="nids-section">
+      <div class="nids-section-label">
+        <span class="nids-section-num">2</span>
+        Basic Connection Features
+      </div>
+      <div class="nids-grid-2">
 
-<%-include('partials/footer') %>
+        <div class="nids-field">
+          <label class="nids-label">Logged In <span class="nids-required">*</span></label>
+          <select name="logged_in" class="nids-select" required>
+            <option value="" disabled selected>Select</option>
+            <option value="1">1 — Yes, successfully logged in</option>
+            <option value="0">0 — No</option>
+          </select>
+          <span class="nids-hint">Was login to host successful?</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">Count <span class="nids-required">*</span></label>
+          <input type="number" name="count" class="nids-input" placeholder="e.g. 1" min="0" max="511" required>
+          <span class="nids-hint">Connections to the same host in past 2 seconds (0–511)</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 3: Traffic Rate Features -->
+    <div class="nids-section">
+      <div class="nids-section-label">
+        <span class="nids-section-num">3</span>
+        Traffic Rate Features <span class="nids-section-note">(values between 0.00 – 1.00)</span>
+      </div>
+      <div class="nids-grid-2">
+
+        <div class="nids-field">
+          <label class="nids-label">srv_serror_rate</label>
+          <input type="number" name="srv_serror_rate" class="nids-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <span class="nids-hint">% of connections with SYN errors (same service)</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">srv_rerror_rate</label>
+          <input type="number" name="srv_rerror_rate" class="nids-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <span class="nids-hint">% of connections with REJ errors (same service)</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">same_srv_rate</label>
+          <input type="number" name="same_srv_rate" class="nids-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <span class="nids-hint">% of connections to the same service</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">diff_srv_rate</label>
+          <input type="number" name="diff_srv_rate" class="nids-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <span class="nids-hint">% of connections to different services</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 4: Destination Host Features -->
+    <div class="nids-section">
+      <div class="nids-section-label">
+        <span class="nids-section-num">4</span>
+        Destination Host Features
+      </div>
+      <div class="nids-grid-2">
+
+        <div class="nids-field">
+          <label class="nids-label">dst_host_count</label>
+          <input type="number" name="dst_host_count" class="nids-input" placeholder="e.g. 255" min="0" max="255">
+          <span class="nids-hint">Connections to same destination host (0–255)</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">dst_host_srv_count</label>
+          <input type="number" name="dst_host_srv_count" class="nids-input" placeholder="e.g. 255" min="0" max="255">
+          <span class="nids-hint">Connections to same service on destination host (0–255)</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">dst_host_same_srv_rate</label>
+          <input type="number" name="dst_host_same_srv_rate" class="nids-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <span class="nids-hint">% of same-service connections to destination host</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">dst_host_diff_srv_rate</label>
+          <input type="number" name="dst_host_diff_srv_rate" class="nids-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <span class="nids-hint">% of different-service connections to destination host</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">dst_host_same_src_port_rate</label>
+          <input type="number" name="dst_host_same_src_port_rate" class="nids-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <span class="nids-hint">% of connections using same source port</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">dst_host_serror_rate</label>
+          <input type="number" name="dst_host_serror_rate" class="nids-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <span class="nids-hint">% of connections with SYN errors (destination host)</span>
+        </div>
+
+        <div class="nids-field">
+          <label class="nids-label">dst_host_rerror_rate</label>
+          <input type="number" name="dst_host_rerror_rate" class="nids-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <span class="nids-hint">% of connections with REJ errors (destination host)</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Quick-fill presets -->
+    <div class="nids-presets">
+      <span class="nids-presets-label">Quick fill with sample data:</span>
+      <button type="button" class="nids-preset-btn" onclick="fillPreset('normal')">Normal Traffic</button>
+      <button type="button" class="nids-preset-btn nids-preset-attack" onclick="fillPreset('dos')">DoS Attack</button>
+      <button type="button" class="nids-preset-btn nids-preset-attack" onclick="fillPreset('probe')">Probe Attack</button>
+    </div>
+
+    <!-- Submit -->
+    <div class="nids-submit-row">
+      <button type="submit" class="nids-submit-btn" id="submitBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        Analyse Traffic
+      </button>
+      <button type="reset" class="nids-reset-btn">Clear Form</button>
+    </div>
+
+  </form>
 </div>
 
-<script>
-var myVar;
+<%- include('partials/footer') %>
+</div>
 
-function myFunction() {
-  myVar = setTimeout(showPage, 200);
+<style>
+*{box-sizing:border-box;}
+.nids-page{max-width:860px;margin:0 auto;padding:32px 20px 60px;}
+
+.nids-page-header{display:flex;align-items:center;gap:16px;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb;}
+.nids-header-icon{width:52px;height:52px;background:#0f172a;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
+.nids-page-title{font-size:22px;font-weight:700;color:#0f172a;margin:0 0 4px;}
+.nids-page-sub{font-size:14px;color:#6b7280;margin:0;}
+
+.nids-section{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;margin-bottom:16px;}
+.nids-section-label{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.05em;margin-bottom:20px;}
+.nids-section-num{width:22px;height:22px;background:#0f172a;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.nids-section-note{font-weight:400;text-transform:none;letter-spacing:0;color:#9ca3af;font-size:12px;}
+
+.nids-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.nids-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+@media(max-width:640px){.nids-grid-3,.nids-grid-2{grid-template-columns:1fr;}}
+
+.nids-field{display:flex;flex-direction:column;gap:4px;}
+.nids-label{font-size:12px;font-weight:600;color:#374151;font-family:monospace;}
+.nids-required{color:#dc2626;}
+.nids-hint{font-size:11px;color:#9ca3af;line-height:1.4;}
+.nids-input,.nids-select{width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:13px;color:#111;background:#fafafa;transition:border-color .15s,background .15s;outline:none;}
+.nids-input:focus,.nids-select:focus{border-color:#0f172a;background:#fff;}
+.nids-input::placeholder{color:#c0c7d0;}
+
+.nids-presets{display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:14px 18px;margin-bottom:20px;}
+.nids-presets-label{font-size:12px;color:#6b7280;font-weight:500;margin-right:4px;}
+.nids-preset-btn{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;border:1.5px solid #d1d5db;background:#fff;color:#374151;cursor:pointer;transition:all .15s;}
+.nids-preset-btn:hover{border-color:#0f172a;color:#0f172a;}
+.nids-preset-attack{border-color:#fca5a5;color:#991b1b;}
+.nids-preset-attack:hover{background:#fee2e2;border-color:#dc2626;}
+
+.nids-submit-row{display:flex;gap:12px;align-items:center;}
+.nids-submit-btn{display:flex;align-items:center;padding:13px 32px;background:#0f172a;color:#fff;border:none;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s;}
+.nids-submit-btn:hover{opacity:.85;}
+.nids-reset-btn{padding:13px 24px;background:#fff;color:#6b7280;border:1.5px solid #e5e7eb;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s;}
+.nids-reset-btn:hover{border-color:#9ca3af;color:#374151;}
+</style>
+
+<script>
+function myFunction(){setTimeout(showPage,150);}
+function showPage(){
+  document.getElementById("loader").style.display="none";
+  document.getElementById("myDiv").style.display="block";
 }
-function showPage() {
-  document.getElementById("loader").style.display = "none";
-  document.getElementById("myDiv").style.display = "block";
+
+const PRESETS = {
+  normal: {
+    protocol_type:'tcp', service:'http', flag:'SF', logged_in:'1', count:'2',
+    srv_serror_rate:'0.00', srv_rerror_rate:'0.00', same_srv_rate:'1.00', diff_srv_rate:'0.00',
+    dst_host_count:'255', dst_host_srv_count:'255', dst_host_same_srv_rate:'1.00',
+    dst_host_diff_srv_rate:'0.00', dst_host_same_src_port_rate:'0.00',
+    dst_host_serror_rate:'0.00', dst_host_rerror_rate:'0.00'
+  },
+  dos: {
+    protocol_type:'tcp', service:'http', flag:'S0', logged_in:'0', count:'511',
+    srv_serror_rate:'1.00', srv_rerror_rate:'0.00', same_srv_rate:'1.00', diff_srv_rate:'0.00',
+    dst_host_count:'255', dst_host_srv_count:'255', dst_host_same_srv_rate:'1.00',
+    dst_host_diff_srv_rate:'0.00', dst_host_same_src_port_rate:'1.00',
+    dst_host_serror_rate:'1.00', dst_host_rerror_rate:'0.00'
+  },
+  probe: {
+    protocol_type:'tcp', service:'private', flag:'REJ', logged_in:'0', count:'18',
+    srv_serror_rate:'0.00', srv_rerror_rate:'1.00', same_srv_rate:'0.06', diff_srv_rate:'0.06',
+    dst_host_count:'255', dst_host_srv_count:'5', dst_host_same_srv_rate:'0.02',
+    dst_host_diff_srv_rate:'0.04', dst_host_same_src_port_rate:'0.00',
+    dst_host_serror_rate:'0.00', dst_host_rerror_rate:'0.91'
+  }
+};
+
+function fillPreset(type) {
+  const p = PRESETS[type];
+  for (const [name, val] of Object.entries(p)) {
+    const el = document.querySelector(`[name="${name}"]`);
+    if (el) el.value = val;
+  }
 }
+
+document.getElementById('predForm').addEventListener('submit', function() {
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Analysing…';
+  btn.disabled = true;
+});
 </script>
 
-<%-include('partials/loadfoot') %>
+<%- include('partials/loadfoot') %>
+</body>

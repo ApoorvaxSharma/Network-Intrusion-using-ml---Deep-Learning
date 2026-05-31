@@ -1,3 +1,11 @@
+import os
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["ABSL_MIN_LOG_LEVEL"]   = "3"
+
+import warnings
+warnings.filterwarnings("ignore")
+
 import numpy as np
 import sys
 from sklearn.metrics import accuracy_score, confusion_matrix
@@ -168,7 +176,3 @@ elif(val=='lstm'):
   df_validate['multi class']=l
   df_validate.to_csv(path,index=False)
 print('completed')
-  
-  
-
-
