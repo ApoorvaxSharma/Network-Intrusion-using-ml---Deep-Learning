@@ -23,23 +23,75 @@
     </div>
   </div>
 
+  <!-- ── Step indicator ── -->
+  <div class="np-steps">
+    <div class="np-step active" id="stp0" onclick="jumpToSection(0)">
+      <div class="np-step-dot" id="sdot0">1</div>
+      <span class="np-step-label">Connection</span>
+    </div>
+    <div class="np-step-line"></div>
+    <div class="np-step" id="stp1" onclick="jumpToSection(1)">
+      <div class="np-step-dot" id="sdot1">2</div>
+      <span class="np-step-label">Traffic rates</span>
+    </div>
+    <div class="np-step-line"></div>
+    <div class="np-step" id="stp2" onclick="jumpToSection(2)">
+      <div class="np-step-dot" id="sdot2">3</div>
+      <span class="np-step-label">Destination host</span>
+    </div>
+    <div class="np-step-line"></div>
+    <div class="np-step" id="stp3" onclick="jumpToSection(3)">
+      <div class="np-step-dot" id="sdot3">4</div>
+      <span class="np-step-label">Review & run</span>
+    </div>
+  </div>
+
+  <!-- ── Quick-fill presets ── -->
+  <div class="np-presets">
+    <span class="np-presets-label">Quick fill:</span>
+    <button type="button" class="np-preset" onclick="fillPreset('normal')">
+      <span class="np-preset-dot" style="background:#71C9CE;"></span>Normal Traffic
+    </button>
+    <button type="button" class="np-preset" onclick="fillPreset('dos')">
+      <span class="np-preset-dot" style="background:#f87171;box-shadow:0 0 5px #f87171aa;"></span>DoS Attack
+    </button>
+    <button type="button" class="np-preset" onclick="fillPreset('probe')">
+      <span class="np-preset-dot" style="background:#fbbf24;"></span>Probe Attack
+    </button>
+    <button type="button" class="np-preset" onclick="fillPreset('r2l')">
+      <span class="np-preset-dot" style="background:#c084fc;"></span>R2L Attack
+    </button>
+    <button type="button" class="np-preset" onclick="fillPreset('u2r')">
+      <span class="np-preset-dot" style="background:#fb923c;"></span>U2R Attack
+    </button>
+  </div>
+
   <form action="/parameters" method="post" id="predForm">
 
-    <!-- ── Section 1: Connection Identifiers ── -->
-    <div class="np-section">
+    <!-- ══════════════════════════════════════
+         SECTION 0 — Connection Identifiers
+    ══════════════════════════════════════ -->
+    <div class="np-section" id="sec0">
       <div class="np-section-header">
         <span class="np-section-num">01</span>
         <div>
           <div class="np-section-title">Connection Identifiers</div>
           <div class="np-section-sub">Protocol, service and TCP handshake flag</div>
         </div>
+        <div class="np-section-badge">
+          <span class="np-badge np-badge-required">3 required</span>
+        </div>
       </div>
+
       <div class="np-grid-3">
 
         <div class="np-field">
-          <label class="np-label">Protocol Type <span class="np-req">*</span></label>
+          <label class="np-label" for="protocol_type">
+            Protocol Type <span class="np-req">*</span>
+            <span class="np-tooltip" data-tip="The layer-4 transport protocol used for this connection.">?</span>
+          </label>
           <div class="np-select-wrap">
-            <select name="protocol_type" class="np-select" required>
+            <select name="protocol_type" id="protocol_type" class="np-select" required>
               <option value="" disabled selected>Select protocol</option>
               <option value="tcp">TCP — Transmission Control</option>
               <option value="udp">UDP — User Datagram</option>
@@ -50,9 +102,12 @@
         </div>
 
         <div class="np-field">
-          <label class="np-label">Service <span class="np-req">*</span></label>
+          <label class="np-label" for="service">
+            Service <span class="np-req">*</span>
+            <span class="np-tooltip" data-tip="The destination network service type (port/application).">?</span>
+          </label>
           <div class="np-select-wrap">
-            <select name="service" class="np-select" required>
+            <select name="service" id="service" class="np-select" required>
               <option value="" disabled selected>Select service</option>
               <optgroup label="Common">
                 <option value="http">HTTP</option>
@@ -83,9 +138,12 @@
         </div>
 
         <div class="np-field">
-          <label class="np-label">Flag <span class="np-req">*</span></label>
+          <label class="np-label" for="flag">
+            Flag <span class="np-req">*</span>
+            <span class="np-tooltip" data-tip="Status of the TCP connection: SF = normal, S0 = no response, REJ = rejected, RSTO/RSTR = reset.">?</span>
+          </label>
           <div class="np-select-wrap">
-            <select name="flag" class="np-select" required>
+            <select name="flag" id="flag" class="np-select" required>
               <option value="" disabled selected>Select flag</option>
               <option value="SF">SF — Normal, established</option>
               <option value="S0">S0 — No reply to SYN</option>
@@ -104,168 +162,299 @@
         </div>
 
       </div>
+
+      <!-- Flag reference legend -->
+      <div class="np-flag-legend">
+        <span class="np-legend-label">Flag guide:</span>
+        <span class="np-flag-pill np-flag-safe">SF = Normal</span>
+        <span class="np-flag-pill np-flag-warn">S0 = DoS indicator</span>
+        <span class="np-flag-pill np-flag-warn">REJ = Probe indicator</span>
+        <span class="np-flag-pill np-flag-danger">RSTO/RSTR = Reset attacks</span>
+      </div>
+
+      <div class="np-section-footer">
+        <button type="button" class="np-btn np-btn-next" onclick="goNext(0)">
+          Next: Traffic rates
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
     </div>
 
-    <!-- ── Section 2: Basic Features ── -->
-    <div class="np-section">
+    <!-- ══════════════════════════════════════
+         SECTION 1 — Basic + Traffic Rate Features
+    ══════════════════════════════════════ -->
+    <div class="np-section np-section-collapsed" id="sec1">
       <div class="np-section-header">
         <span class="np-section-num">02</span>
         <div>
-          <div class="np-section-title">Basic Connection Features</div>
-          <div class="np-section-sub">Login status and connection count</div>
+          <div class="np-section-title">Basic &amp; Traffic Rate Features</div>
+          <div class="np-section-sub">Login status, connection count, error rates — enter 0.00–1.00 for rates</div>
+        </div>
+        <div class="np-section-badge">
+          <span class="np-badge">6 fields</span>
         </div>
       </div>
+
       <div class="np-grid-2">
 
         <div class="np-field">
-          <label class="np-label">Logged In <span class="np-req">*</span></label>
+          <label class="np-label" for="logged_in">
+            Logged In <span class="np-req">*</span>
+            <span class="np-tooltip" data-tip="Was a successful login to the host achieved during this connection?">?</span>
+          </label>
           <div class="np-select-wrap">
-            <select name="logged_in" class="np-select" required>
+            <select name="logged_in" id="logged_in" class="np-select" required>
               <option value="" disabled selected>Select</option>
               <option value="1">1 — Yes, successfully logged in</option>
-              <option value="0">0 — No</option>
+              <option value="0">0 — No login</option>
             </select>
           </div>
-          <span class="np-hint">Was login to host successful?</span>
+          <span class="np-hint">Successful authentication?</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">Count <span class="np-req">*</span></label>
-          <input type="number" name="count" class="np-input" placeholder="e.g. 1" min="0" max="511" required>
-          <span class="np-hint">Connections to same host in past 2 sec (0 – 511)</span>
+          <label class="np-label" for="count">
+            Count <span class="np-req">*</span>
+            <span class="np-tooltip" data-tip="Number of connections to the same host in the past 2 seconds. High values (>200) often indicate DoS flooding.">?</span>
+          </label>
+          <input type="number" name="count" id="count" class="np-input" placeholder="e.g. 1" min="0" max="511" required>
+          <span class="np-hint">Same-host connections in past 2 sec (0–511)</span>
         </div>
 
       </div>
-    </div>
 
-    <!-- ── Section 3: Traffic Rate Features ── -->
-    <div class="np-section">
-      <div class="np-section-header">
-        <span class="np-section-num">03</span>
-        <div>
-          <div class="np-section-title">Traffic Rate Features</div>
-          <div class="np-section-sub">Proportional values — enter between 0.00 and 1.00</div>
-        </div>
+      <div class="np-divider"></div>
+      <div class="np-sub-section-title">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="opacity:.6"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Same-service traffic rates
       </div>
+
       <div class="np-grid-2">
 
         <div class="np-field">
-          <label class="np-label">srv_serror_rate</label>
-          <input type="number" name="srv_serror_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <label class="np-label" for="srv_serror_rate">
+            srv_serror_rate
+            <span class="np-tooltip" data-tip="Fraction of connections to the same service that had SYN errors. High = DoS pattern.">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="srv_serror_rate" id="srv_serror_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1" value="0.00">
+            <span class="np-input-range">0–1</span>
+          </div>
           <span class="np-hint">% of SYN errors on same service</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">srv_rerror_rate</label>
-          <input type="number" name="srv_rerror_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <label class="np-label" for="srv_rerror_rate">
+            srv_rerror_rate
+            <span class="np-tooltip" data-tip="Fraction of connections to the same service that had REJ errors. High = port scan / probe pattern.">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="srv_rerror_rate" id="srv_rerror_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1" value="0.00">
+            <span class="np-input-range">0–1</span>
+          </div>
           <span class="np-hint">% of REJ errors on same service</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">same_srv_rate</label>
-          <input type="number" name="same_srv_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <label class="np-label" for="same_srv_rate">
+            same_srv_rate
+            <span class="np-tooltip" data-tip="Fraction of connections to the same service. Normal traffic is usually close to 1.0.">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="same_srv_rate" id="same_srv_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1" value="0.00">
+            <span class="np-input-range">0–1</span>
+          </div>
           <span class="np-hint">% of connections to same service</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">diff_srv_rate</label>
-          <input type="number" name="diff_srv_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <label class="np-label" for="diff_srv_rate">
+            diff_srv_rate
+            <span class="np-tooltip" data-tip="Fraction of connections to different services. High value = scanning across ports (probe attack indicator).">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="diff_srv_rate" id="diff_srv_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1" value="0.00">
+            <span class="np-input-range">0–1</span>
+          </div>
           <span class="np-hint">% of connections to different services</span>
         </div>
 
       </div>
+
+      <div class="np-section-footer">
+        <button type="button" class="np-btn np-btn-ghost" onclick="goPrev(1)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button type="button" class="np-btn np-btn-next" onclick="goNext(1)">
+          Next: Destination host
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
     </div>
 
-    <!-- ── Section 4: Destination Host Features ── -->
-    <div class="np-section">
+    <!-- ══════════════════════════════════════
+         SECTION 2 — Destination Host Features
+    ══════════════════════════════════════ -->
+    <div class="np-section np-section-collapsed" id="sec2">
       <div class="np-section-header">
-        <span class="np-section-num">04</span>
+        <span class="np-section-num">03</span>
         <div>
           <div class="np-section-title">Destination Host Features</div>
           <div class="np-section-sub">100-connection window statistics for the destination host</div>
         </div>
+        <div class="np-section-badge">
+          <span class="np-badge">7 fields</span>
+        </div>
       </div>
+
+      <div class="np-info-box">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        These features are computed over the last <strong>100 connections</strong> to the same destination host, providing a longer-term behavioral window than the 2-second features above.
+      </div>
+
       <div class="np-grid-2">
 
         <div class="np-field">
-          <label class="np-label">dst_host_count</label>
-          <input type="number" name="dst_host_count" class="np-input" placeholder="e.g. 255" min="0" max="255">
-          <span class="np-hint">Connections to same destination host (0 – 255)</span>
+          <label class="np-label" for="dst_host_count">
+            dst_host_count
+            <span class="np-tooltip" data-tip="Number of connections to the same destination IP in the last 100 connections (0–255).">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="dst_host_count" id="dst_host_count" class="np-input" placeholder="e.g. 255" min="0" max="255" value="">
+            <span class="np-input-range">0–255</span>
+          </div>
+          <span class="np-hint">Connections to same destination host</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">dst_host_srv_count</label>
-          <input type="number" name="dst_host_srv_count" class="np-input" placeholder="e.g. 255" min="0" max="255">
-          <span class="np-hint">Connections to same service on dest host (0 – 255)</span>
+          <label class="np-label" for="dst_host_srv_count">
+            dst_host_srv_count
+            <span class="np-tooltip" data-tip="Number of connections to the same service on this destination host (0–255).">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="dst_host_srv_count" id="dst_host_srv_count" class="np-input" placeholder="e.g. 255" min="0" max="255" value="">
+            <span class="np-input-range">0–255</span>
+          </div>
+          <span class="np-hint">Same service on destination host</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">dst_host_same_srv_rate</label>
-          <input type="number" name="dst_host_same_srv_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <label class="np-label" for="dst_host_same_srv_rate">
+            dst_host_same_srv_rate
+            <span class="np-tooltip" data-tip="Fraction of connections to the destination host that used the same service.">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="dst_host_same_srv_rate" id="dst_host_same_srv_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1" value="">
+            <span class="np-input-range">0–1</span>
+          </div>
           <span class="np-hint">% same-service connections to dest host</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">dst_host_diff_srv_rate</label>
-          <input type="number" name="dst_host_diff_srv_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <label class="np-label" for="dst_host_diff_srv_rate">
+            dst_host_diff_srv_rate
+            <span class="np-tooltip" data-tip="Fraction of connections to the destination host using different services. High = scanning.">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="dst_host_diff_srv_rate" id="dst_host_diff_srv_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1" value="">
+            <span class="np-input-range">0–1</span>
+          </div>
           <span class="np-hint">% different-service connections to dest host</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">dst_host_same_src_port_rate</label>
-          <input type="number" name="dst_host_same_src_port_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <label class="np-label" for="dst_host_same_src_port_rate">
+            dst_host_same_src_port_rate
+            <span class="np-tooltip" data-tip="Fraction of connections that used the same source port — a UDP flooding indicator.">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="dst_host_same_src_port_rate" id="dst_host_same_src_port_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1" value="">
+            <span class="np-input-range">0–1</span>
+          </div>
           <span class="np-hint">% connections using same source port</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">dst_host_serror_rate</label>
-          <input type="number" name="dst_host_serror_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <label class="np-label" for="dst_host_serror_rate">
+            dst_host_serror_rate
+            <span class="np-tooltip" data-tip="Fraction of connections to this host that had SYN errors. High = active DoS flooding.">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="dst_host_serror_rate" id="dst_host_serror_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1" value="">
+            <span class="np-input-range">0–1</span>
+          </div>
           <span class="np-hint">% SYN errors on destination host</span>
         </div>
 
         <div class="np-field">
-          <label class="np-label">dst_host_rerror_rate</label>
-          <input type="number" name="dst_host_rerror_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1">
+          <label class="np-label" for="dst_host_rerror_rate">
+            dst_host_rerror_rate
+            <span class="np-tooltip" data-tip="Fraction of connections to this host that had REJ errors. High = probing / scanning.">?</span>
+          </label>
+          <div class="np-input-with-badge">
+            <input type="number" name="dst_host_rerror_rate" id="dst_host_rerror_rate" class="np-input" placeholder="0.00" step="0.01" min="0" max="1" value="">
+            <span class="np-input-range">0–1</span>
+          </div>
           <span class="np-hint">% REJ errors on destination host</span>
         </div>
 
       </div>
-    </div>
 
-    <!-- ── Quick-fill presets ── -->
-    <div class="np-presets">
-      <span class="np-presets-label">Quick fill:</span>
-      <button type="button" class="np-preset np-preset-normal" onclick="fillPreset('normal')">
-        <span class="np-preset-dot np-preset-dot-safe"></span>Normal Traffic
-      </button>
-      <button type="button" class="np-preset np-preset-attack" onclick="fillPreset('dos')">
-        <span class="np-preset-dot np-preset-dot-threat"></span>DoS Attack
-      </button>
-      <button type="button" class="np-preset np-preset-attack" onclick="fillPreset('probe')">
-        <span class="np-preset-dot np-preset-dot-warn"></span>Probe Attack
-      </button>
-    </div>
-
-    <!-- ── Submit ── -->
-    <div class="np-submit-row">
-      <div class="np-submit-meta">
-        <div class="np-models-running">
-          <span class="np-model-pill">KNN</span>
-          <span class="np-model-pill">RF</span>
-          <span class="np-model-pill">CNN</span>
-          <span class="np-model-pill">LSTM</span>
-        </div>
-        <span class="np-submit-note">All 4 models run simultaneously</span>
-      </div>
-      <div class="np-submit-btns">
-        <button type="reset" class="np-btn np-btn-ghost">Clear</button>
-        <button type="submit" class="np-btn np-btn-primary" id="submitBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          Analyse Traffic
+      <div class="np-section-footer">
+        <button type="button" class="np-btn np-btn-ghost" onclick="goPrev(2)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button type="button" class="np-btn np-btn-next" onclick="goNext(2)">
+          Review &amp; run
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SECTION 3 — Review & Submit
+    ══════════════════════════════════════ -->
+    <div class="np-section np-section-collapsed" id="sec3">
+      <div class="np-section-header">
+        <span class="np-section-num">04</span>
+        <div>
+          <div class="np-section-title">Review &amp; Run Analysis</div>
+          <div class="np-section-sub">Confirm inputs then run all 4 models simultaneously</div>
+        </div>
+      </div>
+
+      <!-- Live summary of entered values -->
+      <div class="np-review-grid" id="reviewGrid"></div>
+
+      <!-- Models that will run -->
+      <div class="np-models-bar">
+        <span class="np-models-label">Models running:</span>
+        <span class="np-model-pill np-model-ml">KNN</span>
+        <span class="np-model-pill np-model-ml">Random Forest</span>
+        <span class="np-model-pill np-model-dl">CNN</span>
+        <span class="np-model-pill np-model-dl">LSTM</span>
+        <span class="np-models-note">Binary + Multi-class output for each</span>
+      </div>
+
+      <div class="np-submit-row">
+        <div class="np-submit-btns">
+          <button type="button" class="np-btn np-btn-ghost" onclick="goPrev(3)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            Back
+          </button>
+          <button type="reset" class="np-btn np-btn-ghost" onclick="resetAll()">Clear all</button>
+          <button type="submit" class="np-btn np-btn-primary" id="submitBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            Analyse Traffic
+          </button>
+        </div>
+        <span class="np-submit-note">Results will include binary + multi-class classification</span>
+      </div>
+
     </div>
 
   </form>
@@ -274,8 +463,11 @@
 <%- include('partials/footer') %>
 </div>
 
+<!-- ══════════════════════════════════════
+     STYLES — scoped to parameters page
+══════════════════════════════════════ -->
 <style>
-/* ── scoped to parameters page only ── */
+/* ── Page layout ── */
 .np-page {
   max-width: 860px;
   margin: 0 auto;
@@ -284,12 +476,12 @@
   color: #fff;
 }
 
-/* Header */
+/* ── Header ── */
 .np-header {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
 }
 .np-header-icon {
@@ -310,7 +502,95 @@
 .np-subtitle { font-size: 13px; color: rgba(255,255,255,0.5); margin: 0; }
 .np-header-actions { display: flex; gap: 8px; }
 
-/* Section cards */
+/* ── Step indicator ── */
+.np-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.np-step {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+.np-step:hover { background: rgba(255,255,255,0.06); }
+.np-step-dot {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  transition: all 0.2s;
+  font-family: monospace;
+  flex-shrink: 0;
+}
+.np-step.active .np-step-dot {
+  border-color: #71C9CE;
+  background: rgba(0,173,181,0.18);
+  color: #71C9CE;
+}
+.np-step.done .np-step-dot {
+  background: rgba(0,173,181,0.25);
+  border-color: #71C9CE;
+  color: #71C9CE;
+}
+.np-step-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  transition: color 0.2s;
+}
+.np-step.active .np-step-label { color: rgba(255,255,255,0.9); font-weight: 600; }
+.np-step.done .np-step-label   { color: rgba(113,201,206,0.7); }
+.np-step-line {
+  flex: 1;
+  min-width: 20px;
+  max-width: 40px;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+}
+
+/* ── Presets ── */
+.np-presets {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+.np-presets-label {
+  font-size: 11px; color: rgba(255,255,255,0.35);
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+  margin-right: 4px;
+}
+.np-preset {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 12px; font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.7);
+}
+.np-preset:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.np-preset-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Section cards ── */
 .np-section {
   background: rgba(255,255,255,0.045);
   border: 1px solid rgba(255,255,255,0.08);
@@ -318,6 +598,15 @@
   padding: 22px 24px;
   margin-bottom: 14px;
   backdrop-filter: blur(12px);
+  transition: opacity 0.2s;
+}
+.np-section-collapsed {
+  opacity: 0.45;
+  pointer-events: none;
+}
+.np-section-collapsed.unlocked {
+  opacity: 1;
+  pointer-events: all;
 }
 .np-section-header {
   display: flex;
@@ -328,8 +617,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .np-section-num {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 11px; font-weight: 700;
   color: #71C9CE;
   letter-spacing: 0.1em;
   font-family: monospace;
@@ -344,27 +632,76 @@
   font-size: 11px;
   color: rgba(255,255,255,0.4);
 }
+.np-section-badge { margin-left: auto; }
+.np-badge {
+  font-size: 10px; font-weight: 600;
+  padding: 3px 9px; border-radius: 99px;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-family: monospace;
+}
+.np-badge-required {
+  background: rgba(0,173,181,0.12);
+  color: rgba(113,201,206,0.9);
+  border-color: rgba(0,173,181,0.2);
+}
 
-/* Grids */
-.np-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
-.np-grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
-@media(max-width:640px) {
+/* ── Grids ── */
+.np-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.np-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (max-width: 640px) {
   .np-grid-3, .np-grid-2 { grid-template-columns: 1fr; }
 }
 
-/* Fields */
+/* ── Fields ── */
 .np-field { display: flex; flex-direction: column; gap: 5px; }
 .np-label {
   font-size: 10px; font-weight: 600;
   color: rgba(255,255,255,0.55);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  text-transform: uppercase; letter-spacing: 0.1em;
   font-family: monospace;
+  display: flex; align-items: center; gap: 5px;
 }
 .np-req { color: #71C9CE; }
 .np-hint { font-size: 10px; color: rgba(255,255,255,0.3); line-height: 1.4; }
 
-/* Inputs */
+/* ── Tooltip ── */
+.np-tooltip {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+  font-size: 9px; font-weight: 700;
+  cursor: help;
+  position: relative;
+}
+.np-tooltip:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a2a36;
+  border: 1px solid rgba(113,201,206,0.25);
+  color: rgba(255,255,255,0.85);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: pre-wrap;
+  max-width: 220px;
+  width: max-content;
+  padding: 8px 11px;
+  border-radius: 8px;
+  z-index: 100;
+  pointer-events: none;
+  line-height: 1.5;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* ── Inputs ── */
 .np-input, .np-select {
   width: 100%;
   padding: 9px 12px;
@@ -385,6 +722,9 @@
   background: rgba(0,173,181,0.08);
   box-shadow: 0 0 0 3px rgba(0,173,181,0.12);
 }
+.np-input:valid:not(:placeholder-shown) {
+  border-color: rgba(113,201,206,0.35);
+}
 .np-select-wrap { position: relative; }
 .np-select-wrap::after {
   content: '';
@@ -400,66 +740,145 @@
 .np-select option { background: #1a2a36; color: #fff; }
 .np-select optgroup { background: #0f2027; color: rgba(255,255,255,0.5); }
 
-/* Presets */
-.np-presets {
+/* Input with inline range badge */
+.np-input-with-badge { position: relative; }
+.np-input-with-badge .np-input { padding-right: 40px; }
+.np-input-range {
+  position: absolute; right: 10px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 9px; font-family: monospace; font-weight: 600;
+  color: rgba(255,255,255,0.25);
+  pointer-events: none;
+}
+
+/* ── Sub section title ── */
+.np-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin: 18px 0 14px;
+}
+.np-sub-section-title {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+  font-family: monospace;
+  display: flex; align-items: center; gap: 7px;
+  margin-bottom: 14px;
+}
+
+/* ── Info box ── */
+.np-info-box {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(0,173,181,0.07);
+  border: 1px solid rgba(0,173,181,0.15);
+  border-radius: 9px;
+  padding: 11px 14px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.5;
+}
+.np-info-box svg { flex-shrink: 0; margin-top: 1px; color: #71C9CE; }
+.np-info-box strong { color: rgba(255,255,255,0.85); }
+
+/* ── Flag legend ── */
+.np-flag-legend {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.np-legend-label {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.3); font-family: monospace;
+  margin-right: 2px;
+}
+.np-flag-pill {
+  font-size: 10px; font-weight: 600; font-family: monospace;
+  padding: 3px 8px; border-radius: 4px;
+}
+.np-flag-safe    { background: rgba(113,201,206,0.12); color: #71C9CE; }
+.np-flag-warn    { background: rgba(251,191,36,0.12);  color: #fbbf24; }
+.np-flag-danger  { background: rgba(248,113,113,0.12); color: #f87171; }
+
+/* ── Section footer ── */
+.np-section-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── Review grid ── */
+.np-review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.np-review-item {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 9px 12px;
+}
+.np-review-key {
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.3); font-family: monospace;
+  margin-bottom: 4px;
+}
+.np-review-val {
+  font-size: 13px; font-weight: 600;
+  color: #71C9CE;
+}
+.np-review-val.empty { color: rgba(255,113,113,0.7); font-style: italic; font-size: 11px; }
+
+/* ── Models bar ── */
+.np-models-bar {
   display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 10px;
   padding: 12px 16px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
-.np-presets-label {
-  font-size: 11px; color: rgba(255,255,255,0.4);
+.np-models-label {
+  font-size: 11px; color: rgba(255,255,255,0.35);
   font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
-  margin-right: 4px;
 }
-.np-preset {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px;
-  border-radius: 99px;
-  font-size: 12px; font-weight: 600;
-  font-family: "Montserrat", sans-serif;
-  cursor: pointer;
-  transition: all 0.15s;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.7);
-}
-.np-preset:hover { background: rgba(255,255,255,0.1); color: #fff; }
-.np-preset-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-}
-.np-preset-dot-safe   { background: #71C9CE; }
-.np-preset-dot-threat { background: #f87171; }
-.np-preset-dot-warn   { background: #fbbf24; }
-
-/* Submit row */
-.np-submit-row {
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 16px;
-  padding: 20px 24px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 14px;
-}
-.np-submit-meta { display: flex; flex-direction: column; gap: 6px; }
-.np-models-running { display: flex; gap: 6px; }
 .np-model-pill {
   font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
   padding: 3px 9px; border-radius: 4px;
+  font-family: monospace;
+}
+.np-model-ml {
   background: rgba(113,201,206,0.12);
   color: #71C9CE;
   border: 1px solid rgba(113,201,206,0.2);
-  font-family: monospace;
 }
-.np-submit-note { font-size: 11px; color: rgba(255,255,255,0.35); }
-.np-submit-btns { display: flex; gap: 10px; align-items: center; }
+.np-model-dl {
+  background: rgba(36,160,237,0.12);
+  color: #24a0ed;
+  border: 1px solid rgba(36,160,237,0.2);
+}
+.np-models-note { font-size: 10px; color: rgba(255,255,255,0.25); margin-left: auto; }
 
-/* Buttons */
+/* ── Submit row ── */
+.np-submit-row {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px;
+}
+.np-submit-btns { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.np-submit-note { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+/* ── Buttons ── */
 .np-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 20px;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px;
   border-radius: 8px;
   font-size: 13px; font-weight: 600;
   font-family: "Montserrat", sans-serif;
@@ -478,57 +897,178 @@
   border: 1px solid rgba(255,255,255,0.1);
 }
 .np-btn-ghost:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.np-btn-next {
+  background: rgba(0,173,181,0.15);
+  color: #71C9CE;
+  border: 1px solid rgba(0,173,181,0.25);
+}
+.np-btn-next:hover { background: rgba(0,173,181,0.25); }
+
+@keyframes spin2 { to { transform: rotate(360deg); } }
 </style>
 
+<!-- ══════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════ -->
 <script>
+/* ── Show page after loader ── */
 function showPage() {
   document.getElementById("loader").style.display = "none";
   document.getElementById("myDiv").style.display = "block";
 }
 
+/* ── Step navigation ── */
+let currentSection = 0;
+
+function activateSection(n) {
+  for (let i = 0; i < 4; i++) {
+    const sec  = document.getElementById('sec'  + i);
+    const stp  = document.getElementById('stp'  + i);
+    const sdot = document.getElementById('sdot' + i);
+    sec.classList.remove('np-section-collapsed', 'unlocked');
+    stp.classList.remove('active', 'done');
+    if (i < n) {
+      sec.classList.add('np-section-collapsed', 'unlocked');
+      stp.classList.add('done');
+      sdot.innerHTML = '✓';
+    } else if (i === n) {
+      stp.classList.add('active');
+      sdot.textContent = i + 1;
+    } else {
+      sec.classList.add('np-section-collapsed');
+      sdot.textContent = i + 1;
+    }
+  }
+  currentSection = n;
+  if (n === 3) buildReview();
+  // Scroll to section
+  setTimeout(() => {
+    document.getElementById('sec' + n).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+}
+
+function jumpToSection(n) {
+  if (n <= currentSection || document.getElementById('sec' + n).classList.contains('unlocked')) {
+    activateSection(n);
+  }
+}
+
+function goNext(from) { activateSection(from + 1); }
+function goPrev(from) { activateSection(from - 1); }
+
+/* ── Build review summary ── */
+const REVIEW_FIELDS = [
+  { name:'protocol_type',            label:'Protocol' },
+  { name:'service',                  label:'Service' },
+  { name:'flag',                     label:'Flag' },
+  { name:'logged_in',                label:'Logged in' },
+  { name:'count',                    label:'Count' },
+  { name:'srv_serror_rate',          label:'srv_serror_rate' },
+  { name:'srv_rerror_rate',          label:'srv_rerror_rate' },
+  { name:'same_srv_rate',            label:'same_srv_rate' },
+  { name:'diff_srv_rate',            label:'diff_srv_rate' },
+  { name:'dst_host_count',           label:'dst_host_count' },
+  { name:'dst_host_srv_count',       label:'dst_host_srv_count' },
+  { name:'dst_host_same_srv_rate',   label:'dst_host_same_srv_rate' },
+  { name:'dst_host_diff_srv_rate',   label:'dst_host_diff_srv_rate' },
+  { name:'dst_host_same_src_port_rate', label:'dst_host_same_src_port_rate' },
+  { name:'dst_host_serror_rate',     label:'dst_host_serror_rate' },
+  { name:'dst_host_rerror_rate',     label:'dst_host_rerror_rate' }
+];
+
+function buildReview() {
+  const grid = document.getElementById('reviewGrid');
+  grid.innerHTML = REVIEW_FIELDS.map(f => {
+    const el  = document.querySelector('[name="' + f.name + '"]');
+    const val = el ? el.value : '';
+    const isEmpty = val === '' || val === null;
+    return '<div class="np-review-item">' +
+      '<div class="np-review-key">' + f.label + '</div>' +
+      '<div class="np-review-val' + (isEmpty ? ' empty' : '') + '">' +
+        (isEmpty ? 'not set' : val) +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+/* ── Presets ── */
 const PRESETS = {
   normal: {
-    protocol_type:'tcp', service:'http', flag:'SF', logged_in:'1', count:'2',
-    srv_serror_rate:'0.00', srv_rerror_rate:'0.00', same_srv_rate:'1.00', diff_srv_rate:'0.00',
-    dst_host_count:'255', dst_host_srv_count:'255', dst_host_same_srv_rate:'1.00',
-    dst_host_diff_srv_rate:'0.00', dst_host_same_src_port_rate:'0.00',
+    protocol_type:'tcp', service:'http', flag:'SF',
+    logged_in:'1', count:'2',
+    srv_serror_rate:'0.00', srv_rerror_rate:'0.00',
+    same_srv_rate:'1.00', diff_srv_rate:'0.00',
+    dst_host_count:'255', dst_host_srv_count:'255',
+    dst_host_same_srv_rate:'1.00', dst_host_diff_srv_rate:'0.00',
+    dst_host_same_src_port_rate:'0.00',
     dst_host_serror_rate:'0.00', dst_host_rerror_rate:'0.00'
   },
   dos: {
-    protocol_type:'tcp', service:'http', flag:'S0', logged_in:'0', count:'511',
-    srv_serror_rate:'1.00', srv_rerror_rate:'0.00', same_srv_rate:'1.00', diff_srv_rate:'0.00',
-    dst_host_count:'255', dst_host_srv_count:'255', dst_host_same_srv_rate:'1.00',
-    dst_host_diff_srv_rate:'0.00', dst_host_same_src_port_rate:'1.00',
+    protocol_type:'tcp', service:'http', flag:'S0',
+    logged_in:'0', count:'511',
+    srv_serror_rate:'1.00', srv_rerror_rate:'0.00',
+    same_srv_rate:'1.00', diff_srv_rate:'0.00',
+    dst_host_count:'255', dst_host_srv_count:'255',
+    dst_host_same_srv_rate:'1.00', dst_host_diff_srv_rate:'0.00',
+    dst_host_same_src_port_rate:'1.00',
     dst_host_serror_rate:'1.00', dst_host_rerror_rate:'0.00'
   },
   probe: {
-    protocol_type:'tcp', service:'private', flag:'REJ', logged_in:'0', count:'18',
-    srv_serror_rate:'0.00', srv_rerror_rate:'1.00', same_srv_rate:'0.06', diff_srv_rate:'0.06',
-    dst_host_count:'255', dst_host_srv_count:'5', dst_host_same_srv_rate:'0.02',
-    dst_host_diff_srv_rate:'0.04', dst_host_same_src_port_rate:'0.00',
+    protocol_type:'tcp', service:'private', flag:'REJ',
+    logged_in:'0', count:'18',
+    srv_serror_rate:'0.00', srv_rerror_rate:'1.00',
+    same_srv_rate:'0.06', diff_srv_rate:'0.06',
+    dst_host_count:'255', dst_host_srv_count:'5',
+    dst_host_same_srv_rate:'0.02', dst_host_diff_srv_rate:'0.04',
+    dst_host_same_src_port_rate:'0.00',
     dst_host_serror_rate:'0.00', dst_host_rerror_rate:'0.91'
+  },
+  r2l: {
+    protocol_type:'tcp', service:'ftp', flag:'SF',
+    logged_in:'0', count:'1',
+    srv_serror_rate:'0.00', srv_rerror_rate:'0.00',
+    same_srv_rate:'1.00', diff_srv_rate:'0.00',
+    dst_host_count:'1', dst_host_srv_count:'1',
+    dst_host_same_srv_rate:'1.00', dst_host_diff_srv_rate:'0.00',
+    dst_host_same_src_port_rate:'0.50',
+    dst_host_serror_rate:'0.00', dst_host_rerror_rate:'0.00'
+  },
+  u2r: {
+    protocol_type:'tcp', service:'telnet', flag:'SF',
+    logged_in:'1', count:'1',
+    srv_serror_rate:'0.00', srv_rerror_rate:'0.00',
+    same_srv_rate:'1.00', diff_srv_rate:'0.00',
+    dst_host_count:'1', dst_host_srv_count:'1',
+    dst_host_same_srv_rate:'1.00', dst_host_diff_srv_rate:'0.00',
+    dst_host_same_src_port_rate:'1.00',
+    dst_host_serror_rate:'0.00', dst_host_rerror_rate:'0.00'
   }
 };
 
 function fillPreset(type) {
   const p = PRESETS[type];
   for (const [name, val] of Object.entries(p)) {
-    const el = document.querySelector(`[name="${name}"]`);
+    const el = document.querySelector('[name="' + name + '"]');
     if (el) el.value = val;
   }
+  // Go back to step 0 to confirm visually
+  activateSection(0);
 }
 
+/* ── Reset ── */
+function resetAll() {
+  document.getElementById('predForm').reset();
+  activateSection(0);
+}
+
+/* ── Submit spinner ── */
 document.getElementById('predForm').addEventListener('submit', function() {
   const btn = document.getElementById('submitBtn');
-  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" style="animation:spin2 0.8s linear infinite"><circle cx="12" cy="12" r="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/><path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg> Analysing…';
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" style="animation:spin2 0.8s linear infinite;flex-shrink:0"><circle cx="12" cy="12" r="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/><path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg> Analysing…';
   btn.disabled = true;
   btn.style.opacity = '0.8';
 });
 </script>
-
-<style>
-@keyframes spin2 { to { transform: rotate(360deg); } }
-</style>
 
 <%- include('partials/loadfoot') %>
 </body>
