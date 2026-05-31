@@ -144,7 +144,29 @@ app.get("/secrets", function(req, res) {
 
 app.get("/secrets_2", function(req, res) {
   if (!req.isAuthenticated()) return res.redirect("/login");
-  res.render("secrets_2");
+  const s = req.session;
+  res.render("secrets_2", {
+    knn_bin_cls:  s.knn_bin_cls  || "",
+    knn_mul_cls:  s.knn_mul_cls  || "",
+    knn_desc:     s.knn_desc     || "",
+    knn_bin_acc:  s.knn_bin_acc  || "0.9760",
+    knn_mul_acc:  s.knn_mul_acc  || "0.9740",
+    rf_bin_cls:   s.rf_bin_cls   || "",
+    rf_mul_cls:   s.rf_mul_cls   || "",
+    rf_desc:      s.rf_desc      || "",
+    rf_bin_acc:   s.rf_bin_acc   || "0.9741",
+    rf_mul_acc:   s.rf_mul_acc   || "0.9731",
+    cnn_bin_cls:  s.cnn_bin_cls  || "",
+    cnn_mul_cls:  s.cnn_mul_cls  || "",
+    cnn_desc:     s.cnn_desc     || "",
+    cnn_bin_acc:  s.cnn_bin_acc  || "0.9583",
+    cnn_mul_acc:  s.cnn_mul_acc  || "0.9506",
+    lstm_bin_cls: s.lstm_bin_cls || "",
+    lstm_mul_cls: s.lstm_mul_cls || "",
+    lstm_desc:    s.lstm_desc    || "",
+    lstm_bin_acc: s.lstm_bin_acc || "0.9562",
+    lstm_mul_acc: s.lstm_mul_acc || "0.9591"
+  });
 });
 
 // BUG 8 FIX: /secrets_2_ready endpoint now exists — secrets.ejs polling works
