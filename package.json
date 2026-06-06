@@ -5,6 +5,8 @@
   "main": "app.js",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "csv-parse": "^6.2.1",
+    "docx": "^9.7.1",
     "dotenv": "^6.2.0",
     "download": "^8.0.0",
     "ejs": "^2.6.1",

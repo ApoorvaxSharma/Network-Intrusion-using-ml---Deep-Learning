@@ -27,8 +27,14 @@ path+=sys.argv[2];
 #path='/content/gdrive/My Drive/fs_test.csv'
 f=open(path)
 data_Validate=pd.read_csv(f)
-columns = (['protocol_type','service','flag','logged_in','count','srv_serror_rate','srv_rerror_rate','same_srv_rate','diff_srv_rate','dst_host_count','dst_host_srv_count','dst_host_same_srv_rate','dst_host_diff_srv_rate','dst_host_same_src_port_rate','dst_host_serror_rate','dst_host_rerror_rate'])
+columns = (['protocol_type','service','flag','logged_in','count',
+            'srv_serror_rate','srv_rerror_rate','same_srv_rate',
+            'diff_srv_rate','dst_host_count','dst_host_srv_count',
+            'dst_host_same_srv_rate','dst_host_diff_srv_rate',
+            'dst_host_same_src_port_rate','dst_host_serror_rate',
+            'dst_host_rerror_rate','label'])
 data_Validate.columns=columns
+data_Validate = data_Validate.drop(columns=['label'])
 protocol_type_le = LabelEncoder()
 service_le = LabelEncoder()
 flag_le = LabelEncoder()

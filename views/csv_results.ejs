@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SecureNet – Prediction Results</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #0a0e17;
+      --surface:  #111827;
+      --card:     #161f2e;
+      --border:   rgba(255,255,255,0.07);
+      --border2:  rgba(255,255,255,0.12);
+      --accent:   #00d4aa;
+      --accent-d: #00a882;
+      --text:     #e2e8f0;
+      --muted:    #64748b;
+      --muted2:   #94a3b8;
+      --safe:     #22c55e;
+      --safe-bg:  rgba(34,197,94,0.1);
+      --safe-bd:  rgba(34,197,94,0.25);
+      --danger:   #ef4444;
+      --danger-bg:rgba(239,68,68,0.1);
+      --danger-bd:rgba(239,68,68,0.25);
+      --warn:     #f59e0b;
+      --warn-bg:  rgba(245,158,11,0.1);
+      --warn-bd:  rgba(245,158,11,0.25);
+      --purple:   #a78bfa;
+      --purple-bg:rgba(167,139,250,0.1);
+      --purple-bd:rgba(167,139,250,0.25);
+      --orange:   #fb923c;
+      --orange-bg:rgba(251,146,60,0.1);
+      --orange-bd:rgba(251,146,60,0.25);
+      --font: 'Inter', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; font-size: 14px; line-height: 1.6; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 56px;
+      background: rgba(10,14,23,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .nav-logo-icon {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--accent); display: grid; place-items: center; flex-shrink: 0;
+    }
+    .nav-logo-icon svg { width: 16px; height: 16px; fill: #0a0e17; }
+    .nav-logo-text { font-size: 15px; font-weight: 700; color: var(--text); }
+    .nav-logo-text span { color: var(--accent); }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a { color: var(--muted2); text-decoration: none; font-size: 13px; font-weight: 500; padding: 6px 10px; border-radius: 6px; transition: color .15s, background .15s; }
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-links a.active { color: var(--accent); background: rgba(0,212,170,0.08); }
+    .nav-btn { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; border: 1px solid var(--border2); color: var(--muted2); text-decoration: none; transition: all .15s; }
+    .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .page-header {
+      padding: 2rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: radial-gradient(ellipse at 20% 0%, rgba(0,212,170,0.05) 0%, transparent 60%);
+    }
+    .page-header-inner { max-width: 1280px; margin: 0 auto; }
+    .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-bottom: 1rem; }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .page-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .page-title { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 4px; }
+    .page-subtitle { font-size: 13px; color: var(--muted2); }
+    .page-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.25rem; }
+    .pill { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); color: var(--accent); }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--safe); flex-shrink: 0; animation: blink 2s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.4} }
+    .main { max-width: 1280px; margin: 0 auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    @media(max-width:900px){ .stats-grid { grid-template-columns: repeat(2,1fr); } }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.1rem 1.25rem;
+      position: relative; overflow: hidden;
+      animation: fadeUp 0.4s ease both;
+    }
+    .stat-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; }
+    .s-total::after  { background: linear-gradient(90deg, var(--accent), transparent); }
+    .s-normal::after { background: linear-gradient(90deg, var(--safe), transparent); }
+    .s-attack::after { background: linear-gradient(90deg, var(--danger), transparent); }
+    .s-model::after  { background: linear-gradient(90deg, var(--warn), transparent); }
+    .stat-icon { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; margin-bottom: 12px; }
+    .stat-icon svg { width: 15px; height: 15px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .s-total  .stat-icon { background: rgba(0,212,170,0.12); } .s-total  .stat-icon svg { stroke: var(--accent); }
+    .s-normal .stat-icon { background: rgba(34,197,94,0.12); } .s-normal .stat-icon svg { stroke: var(--safe); }
+    .s-attack .stat-icon { background: rgba(239,68,68,0.12); } .s-attack .stat-icon svg { stroke: var(--danger); }
+    .s-model  .stat-icon { background: rgba(245,158,11,0.12);} .s-model  .stat-icon svg { stroke: var(--warn); }
+    .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }
+    .stat-value { font-size: 26px; font-weight: 700; font-family: var(--mono); line-height: 1; letter-spacing: -0.03em; }
+    .s-total  .stat-value { color: var(--accent); }
+    .s-normal .stat-value { color: var(--safe); }
+    .s-attack .stat-value { color: var(--danger); }
+    .s-model  .stat-value { font-size: 16px; color: var(--warn); margin-top:4px; }
+    .stat-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media(max-width:780px){ .two-col { grid-template-columns: 1fr; } }
+    .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; animation: fadeUp 0.4s ease 0.1s both; }
+    .card-head { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid var(--border); }
+    .card-head-left { display: flex; align-items: center; gap: 8px; }
+    .card-head-icon { width: 26px; height: 26px; border-radius: 6px; background: rgba(0,212,170,0.1); display: grid; place-items: center; }
+    .card-head-icon svg { width: 13px; height: 13px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .card-title { font-size: 13px; font-weight: 600; }
+    .card-body { padding: 16px; }
+    .donut-wrap { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .donut-svg-wrap { position: relative; width: 140px; height: 140px; flex-shrink: 0; }
+    .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .donut-pct { font-size: 20px; font-weight: 700; font-family: var(--mono); }
+    .donut-pct.safe   { color: var(--safe); }
+    .donut-pct.danger { color: var(--danger); }
+    .donut-sub { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .donut-legend { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 110px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .legend-name { font-size: 12px; color: var(--muted2); flex: 1; }
+    .legend-val { font-size: 12px; font-family: var(--mono); font-weight: 500; }
+    .legend-pct { font-size: 11px; color: var(--muted); margin-left: 2px; }
+    .bar-list { display: flex; flex-direction: column; gap: 13px; }
+    .bar-item {}
+    .bar-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+    .bar-name { font-size: 12px; font-weight: 500; color: var(--muted2); display: flex; align-items: center; gap: 6px; }
+    .bar-name-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .bar-count { font-size: 12px; font-family: var(--mono); }
+    .bar-track { height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 3px; }
+    .chips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap: 10px; }
+    .attack-chip { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 14px 8px; border-radius: 10px; border: 1px solid; text-align: center; transition: transform .15s; }
+    .attack-chip:hover { transform: translateY(-2px); }
+    .chip-num { font-size: 20px; font-weight: 700; font-family: var(--mono); line-height: 1; }
+    .chip-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+    .chip-sub { font-size: 10px; opacity: 0.55; margin-top: 1px; }
+    .chip-normal { background: var(--safe-bg);   border-color: var(--safe-bd);   color: var(--safe); }
+    .chip-dos    { background: var(--danger-bg); border-color: var(--danger-bd); color: var(--danger); }
+    .chip-probe  { background: var(--warn-bg);   border-color: var(--warn-bd);   color: var(--warn); }
+    .chip-r2l    { background: var(--purple-bg); border-color: var(--purple-bd); color: var(--purple); }
+    .chip-u2r    { background: var(--orange-bg); border-color: var(--orange-bd); color: var(--orange); }
+    .table-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; animation: fadeUp 0.4s ease 0.2s both; }
+    .table-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+    .table-head-left { display: flex; align-items: center; gap: 8px; }
+    .row-badge { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; background: rgba(0,212,170,0.1); color: var(--accent); border: 1px solid rgba(0,212,170,0.2); }
+    .table-controls { display: flex; gap: 8px; align-items: center; }
+    .search-wrap { position: relative; }
+    .search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; opacity: 0.35; pointer-events: none; fill: none; stroke: var(--text); stroke-width: 2; stroke-linecap: round; }
+    .t-search { background: rgba(255,255,255,0.04); border: 1px solid var(--border2); border-radius: 7px; padding: 6px 10px 6px 29px; color: var(--text); font-family: var(--font); font-size: 12px; outline: none; width: 175px; transition: border-color .15s; }
+    .t-search:focus { border-color: var(--accent); background: rgba(0,212,170,0.04); }
+    .t-filter { background: rgba(255,255,255,0.04); border: 1px solid var(--border2); border-radius: 7px; padding: 6px 8px; color: var(--text); font-family: var(--font); font-size: 12px; outline: none; cursor: pointer; }
+    .t-filter:focus { border-color: var(--accent); }
+    .table-scroll { overflow-x: auto; max-height: 420px; overflow-y: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    thead th { position: sticky; top: 0; z-index: 2; background: #131c2b; padding: 9px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background .1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(0,212,170,0.03); }
+    tbody td { padding: 8px 14px; color: var(--text); font-family: var(--mono); white-space: nowrap; font-size: 12px; }
+    .row-idx { color: var(--muted); font-size: 11px; }
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; font-family: var(--font); white-space: nowrap; border: 1px solid; }
+    .badge::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; opacity:0.7; flex-shrink:0; }
+    .badge-normal  { background: var(--safe-bg);   color: var(--safe);   border-color: var(--safe-bd); }
+    .badge-attack  { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-bd); }
+    .badge-dos     { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-bd); }
+    .badge-probe   { background: var(--warn-bg);   color: var(--warn);   border-color: var(--warn-bd); }
+    .badge-r2l     { background: var(--purple-bg); color: var(--purple); border-color: var(--purple-bd); }
+    .badge-u2r     { background: var(--orange-bg); color: var(--orange); border-color: var(--orange-bd); }
+    .table-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted2); flex-wrap: wrap; gap: 8px; }
+    .page-btns { display: flex; gap: 4px; }
+    .page-btn { min-width: 28px; height: 28px; padding: 0 6px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 6px; color: var(--muted2); font-family: var(--font); font-size: 12px; cursor: pointer; transition: all .15s; }
+    .page-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); background: rgba(0,212,170,0.08); }
+    .page-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,212,170,0.12); font-weight: 600; }
+    .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .actions-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .btn-ghost { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; border: 1px solid var(--border2); color: var(--muted2); text-decoration: none; background: transparent; transition: all .15s; font-family: var(--font); cursor: pointer; }
+    .btn-ghost:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .btn-ghost svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .btn-accent { display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; background: var(--accent); color: #0a0e17; text-decoration: none; transition: all .15s; font-family: var(--font); cursor: pointer; }
+    .btn-accent:hover { background: var(--accent-d); transform: translateY(-1px); }
+    .btn-accent svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    .stats-grid .stat-card:nth-child(1){animation-delay:.00s}
+    .stats-grid .stat-card:nth-child(2){animation-delay:.06s}
+    .stats-grid .stat-card:nth-child(3){animation-delay:.12s}
+    .stats-grid .stat-card:nth-child(4){animation-delay:.18s}
+  </style>
+</head>
+<body>
+
+<%
+  const totalR   = totalRows;
+  const atkPct   = totalR > 0 ? Math.round(attackCount / totalR * 100) : 0;
+  const normPct  = totalR > 0 ? Math.round(normalCount / totalR * 100) : 0;
+  const modelAcc = model === 'cnn' ? '95%' : model === 'lstm' ? '93%' : model === 'rf' ? '99%' : '97%';
+  const bdMax    = Math.max(...Object.values(breakdown), 1);
+  const bdColors = { Normal:'var(--safe)', Dos:'var(--danger)', Probe:'var(--warn)', R2L:'var(--purple)', U2R:'var(--orange)' };
+  const chipCls  = { Normal:'chip-normal', Dos:'chip-dos', Probe:'chip-probe', R2L:'chip-r2l', U2R:'chip-u2r' };
+  const bdDesc   = { Normal:'Normal traffic', Dos:'Denial of Service', Probe:'Probe / Scan', R2L:'Remote to Local', U2R:'User to Root' };
+  const r=54, circ=2*Math.PI*r;
+  const safeDash = circ * normPct / 100;
+  const atkDash  = circ * atkPct  / 100;
+%>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+    </div>
+    <span class="nav-logo-text">Secure<span>Net</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/submit" class="active">Predict</a>
+    <a href="/features">Features</a>
+    <a href="/attacks">Attacks</a>
+    <a href="/about">About</a>
+    <a href="/stats">Stats</a>
+  </div>
+  <a href="/logout" class="nav-btn">Logout</a>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb">
+      <a href="/submit">Predict</a> &rsaquo; Results
+    </div>
+    <div class="page-title-row">
+      <div>
+        <h1 class="page-title">Prediction Results</h1>
+        <p class="page-subtitle"><%= totalR.toLocaleString() %> records analysed &middot; <%= model.toUpperCase() %> model &middot; <%= modelAcc %> accuracy</p>
+      </div>
+      <div class="actions-row">
+        <a href="/submit" class="btn-ghost">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          New prediction
+        </a>
+        <a href="/download/<%= encodeURIComponent(filename) %>" class="btn-accent">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download CSV
+        </a>
+      </div>
+    </div>
+    <div class="page-pills">
+      <div class="pill"><div class="status-dot"></div> Analysis complete</div>
+      <div class="pill">Model: <%= model.toUpperCase() %></div>
+      <div class="pill">Accuracy: <%= modelAcc %></div>
+      <div class="pill">File: <%= filename %></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="stats-grid">
+    <div class="stat-card s-total">
+      <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M14 14h7v7h-7z"/><path d="M3 14h7v7H3z"/></svg></div>
+      <div class="stat-label">Total Records</div>
+      <div class="stat-value"><%= totalR.toLocaleString() %></div>
+      <div class="stat-sub">Rows processed</div>
+    </div>
+    <div class="stat-card s-normal">
+      <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="stat-label">Normal Traffic</div>
+      <div class="stat-value"><%= normalCount.toLocaleString() %></div>
+      <div class="stat-sub"><%= normPct %>% of total</div>
+    </div>
+    <div class="stat-card s-attack">
+      <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <div class="stat-label">Threats Detected</div>
+      <div class="stat-value"><%= attackCount.toLocaleString() %></div>
+      <div class="stat-sub"><%= atkPct %>% of total</div>
+    </div>
+    <div class="stat-card s-model">
+      <div class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+      <div class="stat-label">Model Used</div>
+      <div class="stat-value"><%= model.toUpperCase() %></div>
+      <div class="stat-sub">Accuracy: <%= modelAcc %></div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="section-card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-head-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg></div>
+          <span class="card-title">Binary Classification</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="donut-wrap">
+          <div class="donut-svg-wrap">
+            <svg width="140" height="140" viewBox="0 0 140 140">
+              <circle cx="70" cy="70" r="54" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="16"/>
+              <circle cx="70" cy="70" r="54" fill="none" stroke="#22c55e" stroke-width="16"
+                stroke-dasharray="<%= safeDash.toFixed(2) %> <%= circ.toFixed(2) %>"
+                stroke-dashoffset="0" transform="rotate(-90 70 70)"/>
+              <circle cx="70" cy="70" r="54" fill="none" stroke="#ef4444" stroke-width="16"
+                stroke-dasharray="<%= atkDash.toFixed(2) %> <%= circ.toFixed(2) %>"
+                stroke-dashoffset="<%= (-safeDash).toFixed(2) %>" transform="rotate(-90 70 70)"/>
+            </svg>
+            <div class="donut-center">
+              <div class="donut-pct <%= atkPct > 50 ? 'danger' : 'safe' %>"><%= atkPct %>%</div>
+              <div class="donut-sub">attacks</div>
+            </div>
+          </div>
+          <div class="donut-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:var(--safe)"></div>
+              <span class="legend-name">Normal</span>
+              <span class="legend-val"><%= normalCount.toLocaleString() %></span>
+              <span class="legend-pct">(<%= normPct %>%)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:var(--danger)"></div>
+              <span class="legend-name">Attack</span>
+              <span class="legend-val"><%= attackCount.toLocaleString() %></span>
+              <span class="legend-pct">(<%= atkPct %>%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-head-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <span class="card-title">Attack Distribution</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="bar-list">
+          <% Object.entries(breakdown).forEach(([type, count]) => {
+            const pct = Math.round(count / bdMax * 100);
+            const col = bdColors[type] || 'var(--muted)';
+          %>
+          <div class="bar-item">
+            <div class="bar-meta">
+              <span class="bar-name">
+                <span class="bar-name-dot" style="background:<%= col %>"></span>
+                <%= type %>
+              </span>
+              <span class="bar-count" style="color:var(--text)"><%= count.toLocaleString() %> <span style="color:var(--muted);font-size:10px">(<%= totalR>0?Math.round(count/totalR*100):0 %>%)</span></span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:<%= pct %>%;background:<%= col %>;opacity:0.75"></div>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="card-head">
+      <div class="card-head-left">
+        <div class="card-head-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <span class="card-title">Multi-class Breakdown</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="chips-grid">
+        <% Object.entries(breakdown).forEach(([type, count]) => { %>
+        <div class="attack-chip <%= chipCls[type]||'' %>">
+          <div class="chip-num"><%= count.toLocaleString() %></div>
+          <div class="chip-label"><%= type %></div>
+          <div class="chip-sub"><%= bdDesc[type]||'' %></div>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-head">
+      <div class="table-head-left">
+        <span class="card-title">Detailed Results</span>
+        <span class="row-badge" id="rowCountBadge"><%= rows.length.toLocaleString() %> rows</span>
+      </div>
+      <div class="table-controls">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="t-search" type="text" id="searchInput" placeholder="Search…" oninput="filterTable()"/>
+        </div>
+        <select class="t-filter" id="filterSelect" onchange="filterTable()">
+          <option value="">All types</option>
+          <option value="normal">Normal</option>
+          <option value="attack">Attack</option>
+          <option value="dos">DoS</option>
+          <option value="probe">Probe</option>
+          <option value="r2l">R2L</option>
+          <option value="u2r">U2R</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Protocol</th><th>Service</th><th>Flag</th>
+            <th>Logged In</th><th>Count</th><th>Same Srv Rate</th>
+            <th>Dst Host Cnt</th><th>Dst Srv Cnt</th>
+            <th>Binary</th><th>Multi-class</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <% rows.forEach((row, idx) => {
+            const bin  = (row['binary class'] || '').trim();
+            const multi= (row['multi class']  || '').trim();
+            const binC = bin.toLowerCase();
+            const mulC = multi.toLowerCase();
+          %>
+          <tr data-bin="<%= binC %>" data-multi="<%= mulC %>">
+            <td class="row-idx"><%= idx+1 %></td>
+            <td><%= row.protocol_type||'—' %></td>
+            <td><%= row.service      ||'—' %></td>
+            <td><%= row.flag         ||'—' %></td>
+            <td><%= row.logged_in    ||'—' %></td>
+            <td><%= row.count        ||'—' %></td>
+            <td><%= row.same_srv_rate||'—' %></td>
+            <td><%= row.dst_host_count    ||'—' %></td>
+            <td><%= row.dst_host_srv_count||'—' %></td>
+            <td><span class="badge badge-<%= binC %>"><%= bin||'—' %></span></td>
+            <td><span class="badge badge-<%= mulC %>"><%= multi||'—' %></span></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <span id="pageInfo"></span>
+      <div class="page-btns" id="pageBtns"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const PER_PAGE = 50;
+  let page = 1, visible = [];
+
+  function filterTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const f = document.getElementById('filterSelect').value.toLowerCase();
+    const all = Array.from(document.querySelectorAll('#tableBody tr'));
+    visible = all.filter(tr => {
+      const matchQ = !q || tr.textContent.toLowerCase().includes(q);
+      const matchF = !f || (tr.dataset.bin||'').includes(f) || (tr.dataset.multi||'').includes(f);
+      return matchQ && matchF;
+    });
+    document.getElementById('rowCountBadge').textContent = visible.length.toLocaleString() + ' rows';
+    page = 1; render();
+  }
+
+  function render() {
+    Array.from(document.querySelectorAll('#tableBody tr')).forEach(r => r.style.display = 'none');
+    const start = (page-1)*PER_PAGE, end = start+PER_PAGE;
+    visible.slice(start, end).forEach(r => r.style.display = '');
+    const total = visible.length, pages = Math.ceil(total/PER_PAGE)||1;
+    document.getElementById('pageInfo').textContent =
+      total===0 ? 'No results' : `${(start+1).toLocaleString()}–${Math.min(end,total).toLocaleString()} of ${total.toLocaleString()}`;
+    const btns = document.getElementById('pageBtns');
+    btns.innerHTML = '';
+    if (pages <= 1) return;
+    const mk = (lbl, pg, act, dis) => {
+      const b = document.createElement('button');
+      b.className = 'page-btn' + (act?' active':'');
+      b.textContent = lbl; b.disabled = dis;
+      if (!dis) b.onclick = () => { page=pg; render(); };
+      return b;
+    };
+    btns.appendChild(mk('‹', page-1, false, page===1));
+    let lo=Math.max(1,page-3), hi=Math.min(pages,lo+6);
+    if(hi-lo<6) lo=Math.max(1,hi-6);
+    for(let i=lo;i<=hi;i++) btns.appendChild(mk(i,i,i===page,false));
+    btns.appendChild(mk('›', page+1, false, page===pages));
+  }
+
+  visible = Array.from(document.querySelectorAll('#tableBody tr'));
+  render();
+</script>
+</body>
+</html>

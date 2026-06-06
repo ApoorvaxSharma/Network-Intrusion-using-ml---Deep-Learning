@@ -1,14 +1,14 @@
 //jshint esversion:6
 require('dotenv').config();
-
 currentYear = new Date().getFullYear();
-const {parse, stringify} = require('flatted');
+const {parse: flatParse, stringify} = require('flatted');
 let {PythonShell} = require('python-shell');
 const express = require("express");
 var multer  = require('multer');
 const download = require('download');
 const path = require("path");
 const fs = require('fs');
+const { parse } = require('csv-parse/sync');
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
@@ -23,7 +23,6 @@ app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// BUG 2 FIX: session secret moved to environment variable
 app.use(session({
   secret: process.env.SESSION_SECRET || "fallback-dev-secret-change-in-production",
   resave: false,
@@ -70,13 +69,11 @@ passport.use(new GoogleStrategy({
   }
 }));
 
-// BUG 1 FIX: cross-platform Python path — tries venv first, falls back to system python3/python
 function getPythonPath() {
   const venvWin  = path.join(__dirname, ".venv", "Scripts", "python.exe");
   const venvUnix = path.join(__dirname, ".venv", "bin", "python");
   if (fs.existsSync(venvWin))  return venvWin;
   if (fs.existsSync(venvUnix)) return venvUnix;
-  // fall back to system Python (works in Docker / Heroku / Mac)
   return process.platform === "win32" ? "python" : "python3";
 }
 
@@ -92,11 +89,9 @@ var upload = multer({ storage: storage }).single('myfile');
 
 app.get("/", function(req, res) { res.render("home"); });
 
-// BUG 3 FIX: auth guard added; BUG 4 FIX: results stored in req.session (per-user)
 app.get("/secrets", function(req, res) {
   if (!req.isAuthenticated()) return res.redirect("/login");
 
-  // Reset session results for this request
   req.session.randomResult = null;
 
   const defaultAccuracies = {
@@ -105,7 +100,6 @@ app.get("/secrets", function(req, res) {
     cnn_bin_acc:  "0.9583", cnn_mul_acc:  "0.9506",
     lstm_bin_acc: "0.9562", lstm_mul_acc: "0.9591"
   };
-  // Pre-render with empty results; secrets_2 will show populated data
   Object.assign(req.session, defaultAccuracies,
     { knn_bin_cls:"", knn_mul_cls:"", knn_desc:"",
       rf_bin_cls:"",  rf_mul_cls:"",  rf_desc:"",
@@ -123,7 +117,6 @@ app.get("/secrets", function(req, res) {
   PythonShell.run('nids_random_updated.py', options, (err, response) => {
     if (err) { console.log("Python error:", err); return; }
     if (response) {
-      // BUG 4 FIX: store in session, not globals
       req.session.knn_bin_cls  = stringify(response[0]).slice(2,-2);
       req.session.knn_mul_cls  = stringify(response[1]).slice(2,-2);
       req.session.knn_desc     = stringify(response[2]).slice(2,-2);
@@ -169,12 +162,10 @@ app.get("/secrets_2", function(req, res) {
   });
 });
 
-// BUG 8 FIX: /secrets_2_ready endpoint now exists — secrets.ejs polling works
 app.get("/secrets_2_ready", function(req, res) {
   res.json({ ready: !!(req.session && req.session.randomReady) });
 });
 
-// BUG 3 FIX: auth guard added to paramsecrets and parameters
 app.get("/paramsecrets", function(req, res) {
   if (!req.isAuthenticated()) return res.redirect("/login");
   res.render("paramsecrets", { prediction: null, error: null });
@@ -196,14 +187,13 @@ app.post("/parameters", function(req, res) {
     pythonPath: getPythonPath(),
     scriptPath: __dirname,
     args: args,
-    stderrParser: line => null   // ignore stderr (sklearn/TF warnings) — don't treat as errors
+    stderrParser: line => null
   };
 
   PythonShell.run('nids_parameter_updated.py', options, (err, response) => {
     const raw = (response && response[0]) ? response[0].trim() : null;
 
     if (!raw) {
-      // Script crashed before printing anything (missing import, etc.)
       const hint = err ? (err.message || JSON.stringify(err)) : "No output from prediction script.";
       return res.render("paramsecrets", { prediction: null, error: "Script failed to start — " + hint });
     }
@@ -215,13 +205,11 @@ app.post("/parameters", function(req, res) {
       }
       return res.render("paramsecrets", { prediction: result, error: null });
     } catch (parseErr) {
-      // Not valid JSON — show raw output for debugging
       return res.render("paramsecrets", { prediction: null, error: "Script output (not JSON): " + raw.slice(0, 400) });
     }
   });
 });
 
-// BUG 5 FIX: duplicate GET /csv removed — only one handler with auth guard
 app.get("/csv", function(req, res) {
   if (req.isAuthenticated()) res.render("csv");
   else res.redirect("/login");
@@ -233,18 +221,71 @@ app.post('/uploadjavatpoint', function(req, res) {
   upload(req, res, function(err) {
     if (err) return res.end("Error uploading file.");
     const submitted_model = req.body.selected_model;
+
+    console.log("=== CSV UPLOAD: model =", submitted_model, "| file =", submitted_csv_file);
+
     const options = {
       pythonPath: getPythonPath(),
       scriptPath: __dirname,
       args: [submitted_model, submitted_csv_file],
       stderrParser: line => null
     };
+
     PythonShell.run('nids_csv_updated.py', options, (err, response) => {
-      if (err) { console.log(err); return res.end("Prediction failed!"); }
-      if (response) {
-        final_ans = stringify(response[0]).slice(2,-2);
-        res.end("Prediction completed successfully!");
+      if (err) {
+        console.log("=== PYTHON ERROR:", err);
+        return res.end("Prediction failed!");
       }
+
+      console.log("=== PYTHON RESPONSE:", response);
+
+      const resultPath = path.join(__dirname, 'Uploaded_files', submitted_csv_file);
+      console.log("=== RESULT FILE PATH:", resultPath);
+      console.log("=== FILE EXISTS:", fs.existsSync(resultPath));
+
+      let rows = [];
+      try {
+        const fileContent = fs.readFileSync(resultPath, 'utf8');
+        rows = parse(fileContent, { columns: true, skip_empty_lines: true });
+        console.log("=== PARSED ROWS:", rows.length);
+        console.log("=== FIRST ROW KEYS:", rows[0] ? Object.keys(rows[0]) : "no rows");
+      } catch (readErr) {
+        console.log("=== FILE READ ERROR:", readErr.message);
+        return res.end("Error reading result file: " + readErr.message);
+      }
+
+      const totalRows = rows.length;
+      let normalCount = 0, attackCount = 0;
+      const breakdown = { Normal: 0, Dos: 0, Probe: 0, R2L: 0, U2R: 0 };
+
+      rows.forEach(row => {
+        const bin   = (row['binary class'] || '').trim();
+        const multi = (row['multi class']  || '').trim();
+        if (bin === 'Normal') normalCount++;
+        else attackCount++;
+        if (breakdown[multi] !== undefined) breakdown[multi]++;
+      });
+
+      console.log("=== STATS: total=", totalRows, "normal=", normalCount, "attack=", attackCount);
+      console.log("=== BREAKDOWN:", breakdown);
+      console.log("=== RENDERING csv_results...");
+
+      res.render('csv_results', {
+        rows,
+        totalRows,
+        normalCount,
+        attackCount,
+        breakdown,
+        model:    submitted_model,
+        filename: submitted_csv_file
+      }, function(renderErr, html) {
+        if (renderErr) {
+          console.log("=== RENDER ERROR:", renderErr);
+          return res.end("Render error: " + renderErr.message);
+        }
+        console.log("=== RENDER SUCCESS, sending HTML...");
+        res.send(html);
+      });
     });
   });
 });
@@ -257,6 +298,11 @@ app.get('/index', (req, res) => {
 app.get('/download-file', (req, res) => {
   const dlPath = './Uploaded_files/' + submitted_csv_file;
   res.download(dlPath);
+});
+
+app.get('/download/:filename', (req, res) => {
+  const filePath = path.join(__dirname, 'Uploaded_files', req.params.filename);
+  res.download(filePath);
 });
 
 app.get("/features",  (req, res) => res.render("features"));

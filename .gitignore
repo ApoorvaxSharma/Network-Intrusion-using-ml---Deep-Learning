@@ -88,6 +88,7 @@ node_modules/
 
 # Python virtual environment
 .venv/
+thesis_venv
 
 # Python cache
 __pycache__/
@@ -98,3 +99,5 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+README.md
