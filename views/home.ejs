@@ -8,34 +8,45 @@
 
   <div class="container">
 
+    <div class="hero-badge">
+      NSL-KDD • LSTM • CNN • Random Forest • KNN
+    </div>
+
     <div class="hero-grid">
 
-      <!-- TEXT -->
       <div class="hero-text">
 
         <h1 class="hero-title">
-          Network Intrusion Detection System
+          Detect <span>Network Threats</span><br>
         </h1>
 
         <p class="hero-subtitle">
-          AI-powered cyber attack detection using Machine Learning & Deep Learning models
+          SecureNet is an AI-powered intrusion detection system that uses
+          Machine Learning and Deep Learning models to identify cyber attacks
+          in real time with high accuracy.
         </p>
 
         <div class="hero-buttons">
-          <a class="btn-primary" href="/submit">
-            <i class="fa-solid fa-user"></i> Sign In
+
+          <a href="/submit" class="btn-primary">
+            Launch SecureNet →
           </a>
 
-          <a class="btn-outline" href="/register">
-            <i class="fa-solid fa-user-plus"></i> Sign Up
-          </a>
+          <!--<a href="#features" class="btn-outline">
+            Explore Features
+          </a> -->
+
         </div>
 
       </div>
 
-      <!-- IMAGE (SMALLER PHONE) -->
-      <div class="hero-image">
-        <img src="css/iphone6.png" class="phone-mockup" alt="dashboard">
+      <!--<div class="hero-image"> -->
+
+        <!-- temporary -->
+        <!--<img src="/css/iphone6.png"
+             class="dashboard-preview"
+             alt="SecureNet Dashboard"> -->
+
       </div>
 
     </div>
@@ -45,52 +56,116 @@
 </section>
 
 <!-- FEATURES -->
+<section id="models">
+<section class="stats-section">
+
+    <div class="container">
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <h2>99%+</h2>
+                <p>Detection Accuracy</p>
+            </div>
+
+            <div class="stat-card">
+                <h2>4</h2>
+                <p>ML / DL Models</p>
+            </div>
+
+            <div class="stat-card">
+                <h2>23</h2>
+                <p>Attack Classes</p>
+            </div>
+
+            <div class="stat-card">
+                <h2>24/7</h2>
+                <p>Real-Time Detection</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 <section class="features-section">
 
   <div class="container">
 
     <div class="section-title">
-      <h2>System Features</h2>
-      <p>Core capabilities of the intrusion detection system</p>
+      <h2>Choose Your Detection Model</h2>
+      <p>
+        Compare Machine Learning and Deep Learning models trained on
+        the NSL-KDD dataset.
+      </p>
     </div>
 
-    <div class="feature-grid">
+    <div class="model-grid">
 
-      <div class="feature-card">
-        <i class="fa-solid fa-clock"></i>
-        <h3>Traffic Processing</h3>
-        <p>Convert network traffic into structured signatures</p>
-      </div>
+      <!-- LSTM -->
+      <a href="/parameters-lstm" class="model-card">
+        <div class="model-icon">⚡</div>
 
-      <div class="feature-card">
-        <i class="fa-solid fa-brain"></i>
-        <h3>Prevent System</h3>
-        <p>Automatically respond to detected threats</p>
-      </div>
+        <h3>LSTM</h3>
 
-      <div class="feature-card">
-        <i class="fa-solid fa-masks-theater"></i>
-        <h3>Threat Reporting</h3>
-        <p>Log and report malicious activities</p>
-      </div>
+        <p>
+          Captures temporal patterns in network traffic
+          using recurrent neural networks.
+        </p>
 
-      <div class="feature-card">
-        <i class="fa-solid fa-book-skull"></i>
-        <h3>Classification</h3>
-        <p>Classify attacks using ML & DL models</p>
-      </div>
+        <span class="accuracy-badge">
+          ~99% Accuracy
+        </span>
+      </a>
 
-      <div class="feature-card">
-        <i class="fa-solid fa-users-rays"></i>
-        <h3>Anomaly Detection</h3>
-        <p>Detect unknown (zero-day) attacks</p>
-      </div>
+      <!-- CNN -->
+      <a href="/parameters-cnn" class="model-card">
+        <div class="model-icon">◈</div>
 
-      <div class="feature-card">
-        <i class="fa-brands fa-searchengin"></i>
-        <h3>Signature Matching</h3>
-        <p>Match traffic patterns with known threats</p>
-      </div>
+        <h3>CNN</h3>
+
+        <p>
+          Learns spatial feature relationships
+          from encoded network packets.
+        </p>
+
+        <span class="accuracy-badge">
+          ~98% Accuracy
+        </span>
+      </a>
+
+      <!-- RF -->
+      <a href="/parameters-rf" class="model-card">
+        <div class="model-icon">🌲</div>
+
+        <h3>Random Forest</h3>
+
+        <p>
+          Ensemble learning with strong
+          interpretability and robustness.
+        </p>
+
+        <span class="accuracy-badge">
+          ~99% Accuracy
+        </span>
+      </a>
+
+      <!-- KNN -->
+      <a href="/parameters-knn" class="model-card">
+        <div class="model-icon">◎</div>
+
+        <h3>KNN</h3>
+
+        <p>
+          Distance-based classification
+          ideal for benchmarking performance.
+        </p>
+
+        <span class="accuracy-badge">
+          ~98% Accuracy
+        </span>
+      </a>
 
     </div>
 
@@ -98,56 +173,153 @@
 
 </section>
 
+<section class="detection-section">
+
+    <div class="container">
+
+        <div class="section-title">
+            <h2>Three Ways To Detect Threats</h2>
+            <p>
+                Analyze network traffic using multiple prediction methods.
+            </p>
+        </div>
+
+        <div class="detection-grid">
+
+            <!-- Manual -->
+            <a href="/parameters" class="detection-card">
+
+                <div class="detection-number">
+                    01
+                </div>
+
+                <h3>Manual Parameters</h3>
+
+                <p>
+                    Enter all network traffic features manually and
+                    get instant attack predictions.
+                </p>
+
+                <span class="detection-tag">
+                    Instant Prediction
+                </span>
+
+            </a>
+
+            <!-- CSV -->
+            <a href="/csv" class="detection-card">
+
+                <div class="detection-number">
+                    02
+                </div>
+
+                <h3>CSV Upload</h3>
+
+                <p>
+                    Upload multiple network records and perform
+                    batch intrusion analysis.
+                </p>
+
+                <span class="detection-tag">
+                    Batch Analysis
+                </span>
+
+            </a>
+
+            <!-- Random -->
+            <a href="/submit" class="detection-card">
+
+                <div class="detection-number">
+                    03
+                </div>
+
+                <h3>Model Playground</h3>
+
+                <p>
+                    Test different ML and DL models on attack
+                    classifications and compare predictions.
+                </p>
+
+                <span class="detection-tag">
+                    Interactive Demo
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
 <!-- ATTACK SECTION -->
-<section class="attack-section">
+<section id="attacks" class="attack-section">
 
   <div class="container">
 
     <div class="section-title">
-      <h2>Types of Network Attacks</h2>
+      <h2>Attack Categories Detected</h2>
+      <p>
+        SecureNet identifies malicious traffic across multiple intrusion classes.
+      </p>
     </div>
 
-    <div id="attackCarousel" class="carousel slide attack-carousel" data-ride="carousel">
+    <div class="attack-grid">
 
-      <div class="carousel-inner">
+      <div class="attack-card">
+        <div class="attack-icon dos"></div>
 
-        <div class="carousel-item active">
-          <div class="attack-card">
-            <h3>Denial of Service (DoS)</h3>
-            <p>Flooding a system to make it unavailable to users.</p>
-          </div>
-        </div>
+        <h3>DoS</h3>
 
-        <div class="carousel-item">
-          <div class="attack-card">
-            <h3>Probe Attack</h3>
-            <p>Scanning networks to discover vulnerabilities.</p>
-          </div>
-        </div>
-
-        <div class="carousel-item">
-          <div class="attack-card">
-            <h3>Remote to Local (R2L)</h3>
-            <p>Unauthorized remote access to local systems.</p>
-          </div>
-        </div>
-
-        <div class="carousel-item">
-          <div class="attack-card">
-            <h3>User to Root (U2R)</h3>
-            <p>Privilege escalation from user to root access.</p>
-          </div>
-        </div>
-
+        <p>
+          Denial of Service attacks that overwhelm systems
+          with excessive requests.
+        </p>
       </div>
 
-      <a class="carousel-control-prev" href="#attackCarousel" data-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </a>
+      <div class="attack-card">
+        <div class="attack-icon probe"></div>
 
-      <a class="carousel-control-next" href="#attackCarousel" data-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </a>
+        <h3>Probe</h3>
+
+        <p>
+          Network reconnaissance attacks used to discover
+          vulnerabilities and services.
+        </p>
+      </div>
+
+      <div class="attack-card">
+        <div class="attack-icon r2l"></div>
+
+        <h3>R2L</h3>
+
+        <p>
+          Remote attackers gaining unauthorized local access
+          to a target machine.
+        </p>
+      </div>
+
+      <div class="attack-card">
+        <div class="attack-icon u2r"></div>
+
+        <h3>U2R</h3>
+
+        <p>
+          Privilege escalation attacks where normal users
+          obtain root permissions.
+        </p>
+      </div>
+
+      <div class="attack-card">
+        <div class="attack-icon normal"></div>
+
+        <h3>Normal Traffic</h3>
+
+        <p>
+          Legitimate network activity classified as safe
+          by SecureNet.
+        </p>
+      </div>
 
     </div>
 
